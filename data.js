@@ -404,12 +404,12 @@ const PR_REASONS_HUMAN = [
 ["K","Shart bo'yicha bajarilmagan",176,0,"«Amaliy ish shartida so'ralgan ishni yuboring!», «Shartda ko'rsatilganidek qiling»"],
 ["I","Havola / URL yuborilmagan",170,7,"«Bu yerga vazifaning url/havolasini tashlashingiz kerak», «Figma ssilkasini yuboring»"],
 ["J","Format talabi buzilgan",78,1,"«Video tayyorlang», «Uy ishini daftarga yozib qiling», «Prezentatsiya qilib yuklang», «Blender dasturida bajaring»"],
-["M","Izohsiz yoki tushunarsiz izoh",58,1,"«?», «hop», «1234» — 6 belgidan qisqa izohlar"],
+["M","Izohsiz yoki tushunarsiz izoh",57,1,"«?», «hop», «1234» — 6 belgidan qisqa izohlar"],
 ["D","Bir xil ishni tuzatmasdan takroran yuborish",53,0,"«Siz bir xil bo'lgan vazifani to'g'rilamasdan qayta-qayta yuborganligingiz uchun sizdan coinlar ayriladi»"],
 ["N","Kuratorga / mentorga murojaat qilish so'ralgan",47,0,"«Kuratorga murojaat qiling, sizga mentor bilan suhbat darsi qo'yib berishadi»"],
 ["E","Telefonda bajarilgan",34,0,"«React modulidan boshlab telefonda bajarilgan topshiriqlar qabul qilinmaydi»"]
 ];
-const PR_REASONS_HUMAN_TOTAL = { aug: 4816, sep: 91 };
+const PR_REASONS_HUMAN_TOTAL = { aug: 4815, sep: 91 };
 
 // Kurator × sabab (AVGUST, faqat mentor rad etishlari): [kurator, {kod: soni}]
 const PR_CURATOR_REASONS = [
@@ -476,27 +476,39 @@ const PR_RULES = [
 ];
 
 // ---------------------------------------------------------------------------
-// HAJM: "o'zi qancha amaliy bor edi?" — bosh kartadagi 57 617 soni nimadan
-// qolgani. Davr: 1–31 avgust 2026 (created_at bo'yicha). Snapshot 2026-09-02.
+// AVGUSTDA RAD ETILGAN VAZIFALAR — umumiy son va uning bo'linishi.
+// Davr: 1–31 avgust 2026. Blockly avto-qabul kirmaydi (u hech qachon rad etmaydi).
 // ---------------------------------------------------------------------------
-const PR_VOLUME = {
-  aug: {
-    rows: 74830,          // avgustda yuborilgan barcha amaliy topshiriq qatori
-    blockly: 17176,       // shundan blockly o'yin — tizim avtomatik qabul qiladi
-    oldApproved: 37,      // eski tizimdan qolgan 'old_approved' status
-    pending: 29,          // hali tekshirilmagan ('uploaded')
-    reviewed: 57617,      // TEKSHIRILGAN — barcha foizlarning mahraji
-    rejected: 24671,
-    students: 2418,       // amaliy ish topshirgan turli o'quvchi
-    questions: 546,       // avgustda ishlatilgan turli amaliy vazifa
-    chains: 33624         // o'quvchi × vazifa juftligi
-  },
-  // Platformada mavjud (faol) amaliy vazifalar — kurs rejasidagi soni,
-  // avgustda ishlatilganidan ko'p, chunki hamma guruh hamma modulga yetmagan.
-  catalog: {
-    total: 1022,
-    byType: [["Fayl / rasm yuklash (input-file)", 641], ["Kod yozish (compiler)", 299], ["Ovozli javob (voice)", 42], ["Matnli javob (text)", 40]],
-    blockly: 169,
-    byCourse: [["WebStart", 328], ["Веб программирование", 234], ["Dasturlash kursi", 191], ["Grafik dizayn", 101], ["English", 35], ["Junior Kurs", 17], ["Telegram Bot", 12], ["Kompyuter Savodxonligi", 11], ["Suniy Intellekt", 10]]
-  }
+const PR_REJ = {
+  total: 24671,
+  students: 2052,   // rad etish bo'lgan turli o'quvchi
+  lessons: 503,     // rad etish bo'lgan turli dars
+  modules: 31,      // rad etish bo'lgan turli modul
+  byChannel: [
+    ["Ovoz avtotekshiruvi (English)", 7004, "Ovozli javobni tizim tekshiradi"],
+    ["AI tekshiruvi", 12852, "Kod vazifalarini AI tekshiradi (3-avgustdan)"],
+    ["Mentor (odam)", 4815, "Xodim ko'rib, izoh yozib rad etadi"]
+  ]
 };
+
+// Bitta o'quvchi avgustda necha marta rad etilgan: [guruh, o'quvchi soni, rad etishlar]
+const PR_PER_STUDENT = [
+  ["1 marta", 241, 241],
+  ["2 marta", 176, 352],
+  ["3–5 marta", 427, 1662],
+  ["6–10 marta", 450, 3461],
+  ["11–20 marta", 422, 6129],
+  ["21–50 marta", 273, 8174],
+  ["50+ marta", 63, 4652]
+];
+
+// Bitta vazifa (o'quvchi × vazifa) necha marta rad etilgan — faqat rad etish bo'lganlar:
+// [guruh, zanjir soni, rad etishlar]
+const PR_PER_TASK = [
+  ["1 marta", 4645, 4645],
+  ["2 marta", 1815, 3630],
+  ["3 marta", 1651, 4953],
+  ["4–5 marta", 600, 2640],
+  ["6–10 marta", 515, 3925],
+  ["11+ marta", 242, 4878]
+];
