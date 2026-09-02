@@ -69,7 +69,7 @@
   /* ---------- 2. SABAB ---------- */
   function reasonRows() {
     const out = [];
-    PR_REASONS_HUMAN.forEach((r) => out.push({ code: r[0], lab: r[1], n: r[2], ch: "human", ex: r[4] || "" }));
+    PR_REASONS_HUMAN.forEach((r) => out.push({ code: r[0], lab: r[1], n: r[2], ch: "human", ex: r[3] || "" }));
     PR_REASONS_AI.forEach((r) => out.push({ code: r[0], lab: r[1], n: r[2], ch: "ai", ex: "" }));
     PR_REASONS_VOICE.forEach((r) => out.push({ code: r[0], lab: r[1], n: r[2], ch: "voice", ex: "" }));
     return out.sort((a, b) => b.n - a.n);
@@ -126,8 +126,8 @@
 
   /* ---------- 3. KURATOR ---------- */
   function secCurators() {
-    const rows = PR_CURATORS.filter((c) => c[1] === "2026-08").map((c) => ({
-      n: c[0], rej: c[3], st: c[4], hr: c[6], ar: c[8], vr: c[10],
+    const rows = PR_CURATORS.map((c) => ({
+      n: c[0], rej: c[1], st: c[2], hr: c[3], ar: c[4], vr: c[5],
       roster: PR_CURATOR_ROSTER[c[0]] || null
     })).sort((a, b) => {
       const ux = a.n === "Kurator biriktirilmagan", uy = b.n === "Kurator biriktirilmagan";
@@ -188,17 +188,17 @@
   function curatorCourse() {
     const by = {};
     PR_CURATOR_COURSE.forEach((r) => { (by[r[0]] = by[r[0]] || []).push(r); });
-    const ccMax = Math.max(...PR_CURATOR_COURSE.map((r) => r[3]));
+    const ccMax = Math.max(...PR_CURATOR_COURSE.map((r) => r[2]));
     const body = Object.keys(by).sort().map((n) => {
-      const list = by[n].slice().sort((a, b) => b[3] - a[3]);
+      const list = by[n].slice().sort((a, b) => b[2] - a[2]);
       return list.map((r, i) => `<tr>
         ${i === 0 ? `<td rowspan="${list.length}" class="pr-rowhead"><b>${esc(n)}</b></td>` : ""}
         <td>${esc(r[1])}</td>
-        <td><b>${fi(r[3])}</b></td>
-        <td>${f1(pct(r[3], T))}%</td>
-        <td class="pr-barcell">${shareBar(r[3], ccMax)}</td>
-        <td>${fi(r[4])}</td>
-        <td>${f2(r[3] / r[4])}</td>
+        <td><b>${fi(r[2])}</b></td>
+        <td>${f1(pct(r[2], T))}%</td>
+        <td class="pr-barcell">${shareBar(r[2], ccMax)}</td>
+        <td>${fi(r[3])}</td>
+        <td>${f2(r[2] / r[3])}</td>
       </tr>`).join("");
     }).join("");
     return `
@@ -215,7 +215,7 @@
   /* ---------- 4. MODUL ---------- */
   function secModules() {
     const rows = PR_MODULES_AUG.map((m) => ({
-      crs: m[0], mdl: m[1], ord: m[2], rej: m[4], st: m[5], hr: m[7], ar: m[9], vr: m[11]
+      crs: m[0], mdl: m[1], ord: m[2], rej: m[3], st: m[4], hr: m[5], ar: m[6], vr: m[7]
     })).filter((m) => m.rej > 0).sort((a, b) => b.rej - a.rej);
     const sum = rows.reduce((a, r) => a + r.rej, 0);
     const mMax = Math.max(...rows.map((r) => r.rej));
@@ -265,9 +265,9 @@
       const r = rep[l[0]] || [l[0], 0, 0, 0, 0];
       return {
         lid: l[0], crs: l[1], mdl: l[2], les: l[3],
-        rej: l[6], st: l[7], hr: l[11], ar: l[13], vr: l[15],
-        per: l[6] / l[7], ch2: r[2], ch3: r[3], stuck: r[4],
-        ch: topCh(l[11], l[13], l[15])
+        rej: l[4], st: l[5], hr: l[6], ar: l[7], vr: l[8],
+        per: l[4] / l[5], ch2: r[2], ch3: r[3], stuck: r[4],
+        ch: topCh(l[6], l[7], l[8])
       };
     });
   }
@@ -307,7 +307,7 @@
     const cols = [["#", ""], ["Dars", "les"], ["Ko'proq kim rad etdi", "ch"], ["Rad etishlar", "rej"],
       ["Ulushi", "rej"], ["&nbsp;", ""], ["Rad etilgan o'quvchi", "st"], ["1 o'quvchiga o'rtacha", "per"],
       ["2+ marta rad etilgan vazifa", "ch2"], ["3+ marta", "ch3"], ["Qaytib qabul qilinmagan", "stuck"]];
-    const totalCovered = PR_LESSONS.reduce((a, l) => a + l[6], 0);
+    const totalCovered = PR_LESSONS.reduce((a, l) => a + l[4], 0);
     return `
     <section class="ranking panel-cut" id="pr5">
       <div class="section-head">
@@ -416,6 +416,12 @@
   /* ---------- montaj ---------- */
   function build() {
     $("app").innerHTML = secTotal() + secReasons() + secCurators() + secModules() + secLessons() + secAttempts() + secNote();
+    // Har bir bo'lim sarlavhasi ostiga davrni yozib qo'yamiz — jadvalni alohida
+    // ochib ko'rganda ham sonlar qaysi oyga tegishli ekani ko'rinib turishi kerak
+    document.querySelectorAll("#app .section-head h2").forEach((h) => {
+      h.insertAdjacentHTML("afterend", `<p class="pr-period">Davr: <b>1–31 avgust 2026</b> &mdash; boshqa oy ma'lumoti yo'q</p>`);
+    });
+
     $("rangeChip").textContent = "1–31 avgust 2026";
     $("countChip").textContent = `${fi(T)} ta rad etish`;
 

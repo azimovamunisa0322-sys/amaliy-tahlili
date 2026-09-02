@@ -215,3 +215,5 @@ footer { margin-top: 18px; color: var(--dim); font-size: 10.5px; line-height: 1.
 .pr-big p b { color: var(--text); font: inherit; font-weight: 800; }
 .pr-note-cell { color: var(--muted); font-size: 11px; }
 .pr-barcell { overflow: hidden; }
+.pr-period { margin: 5px 0 0; color: var(--volt-dark); font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.pr-period b { color: var(--volt-dark); }
