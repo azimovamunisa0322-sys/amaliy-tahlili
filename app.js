@@ -76,6 +76,7 @@
             <p class="kpi-foot">${foot}</p>
           </div>`).join("")}
       </div>
+      ${volume()}
       <div class="pr-answers">
         ${answers().map((a) => `<div class="pr-answer"><b>${esc(a[0])}</b><p>${a[1]}</p></div>`).join("")}
       </div>
@@ -114,6 +115,47 @@
         Lekin ichida siljish bor: mentor ${f1(pct(AUG.human[1], AUG.human[0]))}% → ${f1(pct(SEP.human[1], SEP.human[0]))}%, AI ${f1(pct(AUG.ai[1], AUG.ai[0]))}% → ${f1(pct(SEP.ai[1], SEP.ai[0]))}%, ovoz ${f1(pct(AUG.voice[1], AUG.voice[0]))}% → ${f1(pct(SEP.voice[1], SEP.voice[0]))}%.
         Avgust ichida esa mentor rad etish foizi <b>o'sdi</b>: 1–7 avgust ${f1(pct(W_FIRST.human[1], W_FIRST.human[0]))}% → 26 avgust–1 sentyabr ${f1(pct(W_LAST.human[1], W_LAST.human[0]))}%.`]
     ];
+  }
+
+  // ---------- hajm: 57 617 soni nimadan qolgani ----------
+  function volume() {
+    const v = PR_VOLUME.aug, c = PR_VOLUME.catalog;
+    const step = (lab, n, note, minus) => `
+      <tr class="${minus ? "pr-minus" : ""}">
+        <td>${minus ? "&minus;" : ""} <b>${esc(lab)}</b></td>
+        <td><b>${fi(n)}</b></td>
+        <td>${note}</td>
+      </tr>`;
+    return `
+      <h3 class="sub-head">Hajm <em>(1–31 avgust 2026 &mdash; yuqoridagi barcha «avgust» foizlari aynan shu davrga tegishli)</em></h3>
+      <div class="table-wrap">
+        <table class="pr-table pr-narrow">
+          <thead><tr><th>Qadam</th><th>Soni</th><th>Nima uchun</th></tr></thead>
+          <tbody>
+            ${step("Avgustda yuborilgan barcha amaliy topshiriq", v.rows, "O'quvchi «yuborish» tugmasini bosgan har bir hodisa &mdash; bitta vazifani 5 marta yuborsa, 5 qator", false)}
+            ${step("Blockly o'yin vazifalari", v.blockly, "Tizim avtomatik qabul qiladi, hech qachon rad etmaydi &mdash; foizga qo'shsak natija soxta pasayadi", true)}
+            ${step("Hali tekshirilmagan", v.pending, "Status 'uploaded' &mdash; mentor yoki AI hali ko'rmagan, natijasi yo'q", true)}
+            ${step("Eski tizimdan qolgan qatorlar", v.oldApproved, "Status 'old_approved' &mdash; qachon va kim qabul qilgani yozilmagan", true)}
+            <tr class="pr-total">
+              <td><b>= TEKSHIRILGAN TOPSHIRIQ</b></td>
+              <td><b>${fi(v.reviewed)}</b></td>
+              <td>Barcha foizlarning <b>mahraji</b>. Shundan <b>${fi(v.rejected)}</b> tasi rad etilgan &rarr; <b class="${tone(AUG.rate)}">${f1(AUG.rate)}%</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mentor-stat-row pr-split">
+        <div class="mentor-stat"><b>${fi(v.students)}</b><span>O'quvchi</span><small>Avgustda kamida bitta amaliy ish topshirgan turli o'quvchi.</small></div>
+        <div class="mentor-stat"><b>${fi(v.questions)}</b><span>Turli amaliy vazifa ishlatilgan</span><small>Avgustda o'quvchilar aynan shu ${fi(v.questions)} ta vazifaga topshirgan.</small></div>
+        <div class="mentor-stat"><b>${fi(v.chains)}</b><span>«O'quvchi × vazifa» zanjiri</span><small>Har bir zanjirga o'rtacha ${f1(v.reviewed / v.chains)} yuborish to'g'ri keladi &mdash; ya'ni ko'p vazifa bir martada o'tmaydi.</small></div>
+        <div class="mentor-stat"><b>${fi(c.total)}</b><span>Kurs rejasida mavjud amaliy vazifa</span><small>Faol darslardagi barcha amaliy vazifa (blockly'dan tashqari yana ${fi(c.blockly)} ta o'yin). Avgustda shundan ${fi(v.questions)} tasi ishlatilgan &mdash; guruhlar hali hamma modulga yetmagan.</small></div>
+      </div>
+      <p class="threshold-note">
+        <b>Kurs rejasidagi amaliy vazifalar:</b> ${c.byType.map(([k, n]) => `${esc(k)} &mdash; ${fi(n)}`).join(" &middot; ")}.
+        Kurslar bo'yicha: ${c.byCourse.map(([k, n]) => `${esc(k)} ${fi(n)}`).join(" &middot; ")}.
+        <b>WebStart</b> ning ${fi(328)} ta vazifasiga avgustda birorta topshiriq kelmagan &mdash; unda hali faol guruh yo'q.
+        <b>English</b> da esa faqat ${fi(35)} ta amaliy vazifa bor, lekin ular avgustda ${fi(11804)} marta topshirilgan: ovozli mashqlar qayta-qayta yuboriladi.
+      </p>`;
   }
 
   // ---------- 2. AVGUST vs SENTYABR ----------

@@ -474,3 +474,29 @@ const PR_RULES = [
   ["Kurator", "O'quvchining faol obunasidagi guruhning ADMIN_ID xodimi. Bir o'quvchida bitta kurator."],
   ["Sabab toifasi", "Erkin matnli izoh kalit so'zlar bo'yicha prioritetli tartibda toifalanadi; bir izoh faqat bitta toifaga tushadi."]
 ];
+
+// ---------------------------------------------------------------------------
+// HAJM: "o'zi qancha amaliy bor edi?" — bosh kartadagi 57 617 soni nimadan
+// qolgani. Davr: 1–31 avgust 2026 (created_at bo'yicha). Snapshot 2026-09-02.
+// ---------------------------------------------------------------------------
+const PR_VOLUME = {
+  aug: {
+    rows: 74830,          // avgustda yuborilgan barcha amaliy topshiriq qatori
+    blockly: 17176,       // shundan blockly o'yin — tizim avtomatik qabul qiladi
+    oldApproved: 37,      // eski tizimdan qolgan 'old_approved' status
+    pending: 29,          // hali tekshirilmagan ('uploaded')
+    reviewed: 57617,      // TEKSHIRILGAN — barcha foizlarning mahraji
+    rejected: 24671,
+    students: 2418,       // amaliy ish topshirgan turli o'quvchi
+    questions: 546,       // avgustda ishlatilgan turli amaliy vazifa
+    chains: 33624         // o'quvchi × vazifa juftligi
+  },
+  // Platformada mavjud (faol) amaliy vazifalar — kurs rejasidagi soni,
+  // avgustda ishlatilganidan ko'p, chunki hamma guruh hamma modulga yetmagan.
+  catalog: {
+    total: 1022,
+    byType: [["Fayl / rasm yuklash (input-file)", 641], ["Kod yozish (compiler)", 299], ["Ovozli javob (voice)", 42], ["Matnli javob (text)", 40]],
+    blockly: 169,
+    byCourse: [["WebStart", 328], ["Веб программирование", 234], ["Dasturlash kursi", 191], ["Grafik dizayn", 101], ["English", 35], ["Junior Kurs", 17], ["Telegram Bot", 12], ["Kompyuter Savodxonligi", 11], ["Suniy Intellekt", 10]]
+  }
+};

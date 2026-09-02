@@ -205,3 +205,5 @@ footer { margin-top: 18px; color: var(--dim); font-size: 10.5px; line-height: 1.
   .kpi-grid { grid-template-columns: 1fr; }
   .pr-filters { grid-template-columns: 1fr; }
 }
+.pr-minus td:first-child { color: var(--muted); }
+.pr-minus b { font-weight: 700; }
