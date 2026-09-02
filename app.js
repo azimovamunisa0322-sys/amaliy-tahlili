@@ -25,6 +25,17 @@
   }
   const CH_OF = (code) => REASON_MAP[code][0];   // "h" | "a" | "v"
 
+  // dars tokenlari: "<2 belgi base36 indeks><son>" -> { indeks: son }
+  function parseLessons(str) {
+    const out = {};
+    if (!str) return out;
+    str.split(",").forEach((t) => {
+      const i = parseInt(t.slice(0, 2), 36);
+      out[i] = (out[i] || 0) + (+t.slice(2));
+    });
+    return out;
+  }
+
   // modul sonlarini KURS bo'yicha yig'ish: MODULE_MAP[belgi][0] = kurs nomi.
   // Yig'indisi o'quvchining jami rad etishiga aynan teng bo'ladi.
   function byCourse(mods) {
@@ -60,21 +71,22 @@
   const TEST_CURATOR = 21453, TEST_GROUP = 415;
 
   /* ---------- xom to'plamlar (filtrlanmagan) ---------- */
-  function rawSet(rows, taskOf) {
+  function rawSet(rows, taskOf, lesSrc) {
     return rows.map((r, i) => {
       const mods = parseCounts(r[4]), reasons = parseCounts(r[5]);
+      const lessons = parseLessons(lesSrc[r[0]]);
       let total = 0; const ch = { h: 0, a: 0, v: 0 };
       for (const k in reasons) { total += reasons[k]; ch[CH_OF(k)] += reasons[k]; }
       return {
         id: r[0], name: r[1], gid: r[2], aid: r[3],
         group: GROUP_MAP[r[2]] || "", curator: CURATOR_MAP[r[3]] || CURATOR_MAP[0],
-        mods, reasons, total, ch, tasks: taskOf(r, i), courses: byCourse(mods)
+        mods, reasons, lessons, total, ch, tasks: taskOf(r, i), courses: byCourse(mods)
       };
     });
   }
 
-  const RAW_AUG = rawSet(STUDENTS, (r, i) => TASKS[i]);
-  const RAW_SEP = rawSet(STUDENTS_SEP, (r) => TASKS_SEP[r[0]]);
+  const RAW_AUG = rawSet(STUDENTS, (r, i) => TASKS[i], LESSONS_AUG);
+  const RAW_SEP = rawSet(STUDENTS_SEP, (r) => TASKS_SEP[r[0]], LESSONS_SEP);
 
   // avgustda TASKS indeks bo'yicha bog'langan — uzunlik mos kelmasa hamma
   // "necha xil vazifa" soni siljib ketadi, shu sababli ochiq tekshiruv.
@@ -91,12 +103,14 @@
         e = {
           id: s.id, name: s.name, gid: s.gid, aid: s.aid, group: s.group, curator: s.curator,
           mods: Object.assign({}, s.mods), reasons: Object.assign({}, s.reasons),
+          lessons: Object.assign({}, s.lessons),
           ch: Object.assign({}, s.ch), total: s.total, tasks: null, parts: {}
         };
         m.set(s.id, e);
       } else {
         for (const k in s.mods) e.mods[k] = (e.mods[k] || 0) + s.mods[k];
         for (const k in s.reasons) e.reasons[k] = (e.reasons[k] || 0) + s.reasons[k];
+        for (const k in s.lessons) e.lessons[k] = (e.lessons[k] || 0) + s.lessons[k];
         for (const k in s.ch) e.ch[k] += s.ch[k];
         e.total += s.total;
         if (key === "sep") { e.name = s.name; e.gid = s.gid; e.aid = s.aid; e.group = s.group; e.curator = s.curator; }
@@ -146,6 +160,7 @@
       byCh: rollup(list, (s) => ["h", "a", "v"].filter((k) => s.ch[k] > 0).map((k) => [k, s.ch[k]])),
       byReason: rollup(list, (s) => Object.entries(s.reasons)),
       byModule: rollup(list, (s) => Object.entries(s.mods)),
+      byLesson: rollup(list, (s) => Object.entries(s.lessons)),
       byCurator: rollup(list, (s) => [[s.curator, s.total]]),
       byRgroup: rollup(list, (s) => REASON_GROUPS.map((g, i) => {
         let n = 0; g[1].forEach((c) => (n += s.reasons[c] || 0));
@@ -182,6 +197,13 @@
     if (kind === "ch") return { title: CH_LABEL[key][0] + " rad etgan vazifalar", rows: ST.filter((s) => s.ch[key] > 0).map((s) => [s, s.ch[key]]) };
     if (kind === "reason") return { title: "Sabab: " + REASON_MAP[key][1], rows: ST.filter((s) => s.reasons[key]).map((s) => [s, s.reasons[key]]) };
     if (kind === "module") return { title: "Modul: " + MODULE_MAP[key][0] + " · " + MODULE_MAP[key][1], rows: ST.filter((s) => s.mods[key]).map((s) => [s, s.mods[key]]) };
+    if (kind === "lesson") {
+      const L = LESSON_MAP[+key], M = MODULE_MAP[L[0]];
+      return {
+        title: "Dars: " + L[1].trim() + "  —  " + M[0] + " · " + M[1],
+        rows: ST.filter((s) => s.lessons[key]).map((s) => [s, s.lessons[key]])
+      };
+    }
     if (kind === "curator") return { title: "Kurator: " + key, rows: ST.filter((s) => s.curator === key).map((s) => [s, s.total]) };
     if (kind === "rgroup") {
       const g = REASON_GROUPS[+key];
@@ -195,7 +217,8 @@
 
   // bitta o'quvchining kesimi: qaysi oyda, qaysi modulda, qaysi sababdan
   function detail(s) {
-    const mods = Object.entries(s.mods).sort((a, b) => b[1] - a[1]);
+    const les = Object.entries(s.lessons).map(([i, n]) => [+i, n])
+      .sort((a, b) => b[1] - a[1] || LESSON_MAP[a[0]][0].localeCompare(LESSON_MAP[b[0]][0]) || LESSON_MAP[a[0]][2] - LESSON_MAP[b[0]][2]);
     const rs = Object.entries(s.reasons).sort((a, b) => b[1] - a[1]);
     const pk = ["aug", "sep"].filter((k) => s.parts && s.parts[k]);
     const lead = pk.map((k) => {
@@ -214,8 +237,8 @@
           : "Ko'p vazifada bir-ikki martadan &mdash; jiddiy tiqilish yo'q."}</p>` : ""}
         <div class="pr-detail-cols">
           <div>
-            <b>Qaysi modulda</b>
-            <table class="pr-mini">${mods.map(([c, n]) => `<tr><td>${esc(MODULE_MAP[c][0])} · ${esc(MODULE_MAP[c][1])}</td><td>${fi(n)}</td></tr>`).join("")}</table>
+            <b>Qaysi darsda</b>
+            <table class="pr-mini">${les.map(([i, n]) => `<tr><td><b>${esc(LESSON_MAP[i][1].trim()) || "nomsiz dars"}</b><small class="pr-sub">${esc(MODULE_MAP[LESSON_MAP[i][0]][0])} · ${esc(MODULE_MAP[LESSON_MAP[i][0]][1])} &middot; dars tartibi ${LESSON_MAP[i][2]}</small></td><td>${fi(n)}</td></tr>`).join("")}</table>
           </div>
           <div>
             <b>Qaysi sababdan</b>
@@ -409,34 +432,84 @@
     </section>`;
   }
 
-  /* ---------- 4. MODUL ---------- */
+  /* ---------- 4. MODUL (nomga bosilganda darslar ochiladi) ---------- */
+  // Modul ichidagi darslar qatori: LESSON_MAP dan shu modulga tegishli darslar.
+  // Dars sonlarining yig'indisi modul soniga aynan teng — ikkisi bir manbadan.
+  function modLessons(mcode) {
+    const out = [];
+    V.byLesson.forEach((e, idx) => { if (LESSON_MAP[idx][0] === mcode) out.push([idx, e]); });
+    out.sort((a, b) => b[1].n - a[1].n || LESSON_MAP[a[0]][2] - LESSON_MAP[b[0]][2]);
+    return out;
+  }
+
+  function lessonRow(mcode, modN, cols) {
+    const rows = modLessons(mcode);
+    const sum = rows.reduce((a, r) => a + r[1].n, 0);
+    const max = rows.length ? rows[0][1].n : 0;
+    const M = MODULE_MAP[mcode];
+    return `<tr class="pr-mod-detail" id="m${mcode}" hidden><td></td><td colspan="${cols - 1}">
+      <div class="pr-detail-box">
+        <p class="pr-detail-lead">
+          <b>${esc(M[0])} &middot; ${esc(M[1])}</b> modulida rad etish <b>${fi(rows.length)}</b> ta darsda bo'lgan.
+          Quyidagi sonlar qo'shilib <b>${fi(sum)}</b> ni beradi &mdash; modul qatoridagi son bilan aynan bir xil.
+          <br>Har bir dars soni ham bosiladi &mdash; o'sha darsda rad etilgan o'quvchilar ro'yxati ochiladi.
+        </p>
+        <div class="table-wrap"><table class="pr-table pr-lessons">
+          <thead><tr><th class="rank-col">#</th><th>Dars</th><th>Rad etishlar</th><th>Modul ichida</th><th>&nbsp;</th><th>O'quvchi</th><th>1 o'quvchiga</th></tr></thead>
+          <tbody>
+            ${rows.map(([idx, e], i) => `<tr>
+              <td class="rank-col"><span class="rank ${i < 3 ? "top" : ""}">${i + 1}</span></td>
+              <td><b>${esc(LESSON_MAP[idx][1].trim()) || "<span class='pr-dim'>nomsiz dars</span>"}</b><small class="pr-sub">dars tartibi ${LESSON_MAP[idx][2]} &middot; dars id ${LESSON_MAP[idx][3]}</small></td>
+              <td>${num("lesson:" + idx, "<b>" + fi(e.n) + "</b>")}</td>
+              <td>${f1(e.n / sum * 100)}%</td>
+              <td class="pr-barcell">${bar(e.n, max)}</td>
+              <td>${num("lesson:" + idx, fi(e.st))}</td>
+              <td><b>${f1(e.n / e.st)}</b></td>
+            </tr>`).join("")}
+            <tr class="pr-total"><td class="rank-col"></td><td><b>JAMI</b></td><td>${num("module:" + mcode, "<b>" + fi(sum) + "</b>")}</td><td>100%</td><td></td><td>${num("module:" + mcode, fi(modN))}</td><td></td></tr>
+          </tbody>
+        </table></div>
+      </div></td></tr>`;
+  }
+
   function secModules() {
     const rows = [...V.byModule.entries()].sort((a, b) => b[1].n - a[1].n);
     const max = rows.length ? rows[0][1].n : 0;
+    const cols = 7 + (cmpOn() ? 2 : 0);
+    // eng ko'p rad etilgan bitta dars — bo'lim izohida ko'rsatamiz
+    let topIdx = -1, topN = 0;
+    V.byLesson.forEach((e, idx) => { if (e.n > topN) { topN = e.n; topIdx = idx; } });
+    const TL = topIdx >= 0 ? LESSON_MAP[topIdx] : null;
     return `
     <section class="ranking panel-cut" id="pr4">
       <div class="section-head"><div>
-        <p class="eyebrow">4 · Modul</p>
-        <h2>Qaysi moduldan ko'p</h2>
-        <p class="section-note">${V.P.inn} rad etish bo'lgan barcha ${fi(rows.length)} modul.</p>
+        <p class="eyebrow">4 · Modul va dars</p>
+        <h2>Qaysi moduldan, qaysi darsdan ko'p</h2>
+        <p class="section-note">${V.P.inn} rad etish bo'lgan barcha ${fi(rows.length)} modul va ${fi(V.byLesson.size)} dars.</p>
       </div></div>
+      <div class="pr-warn-strip">
+        <b>Modul nomiga bosing</b> &mdash; masalan <b>CSS</b> ga &mdash; o'sha modulning <b>qaysi darsida</b> rad etilgani ochiladi.
+        Muammoni tuzatish uchun kerakli son shu: modul emas, aynan dars.${
+          TL ? ` Eng ko'p rad etilgan dars: <b>${esc(TL[1].trim())}</b> (${esc(MODULE_MAP[TL[0]][0])} &middot; ${esc(MODULE_MAP[TL[0]][1])}) &mdash; ${fi(topN)} marta.` : ""}
+      </div>
       <div class="table-wrap"><table class="pr-table pr-narrow">
         <thead><tr><th class="rank-col">#</th><th>Modul</th><th>Rad etishlar</th><th>Foiz</th><th>&nbsp;</th><th>Rad etilgan o'quvchi</th><th>1 o'quvchiga o'rtacha</th>${cmpHead()}</tr></thead>
         <tbody>
           ${rows.map(([c, e], i) => `<tr>
             <td class="rank-col"><span class="rank ${i < 3 ? "top" : ""}">${i + 1}</span></td>
-            <td><b>${esc(MODULE_MAP[c][1])}</b><small class="pr-sub">${esc(MODULE_MAP[c][0])} · ${MODULE_MAP[c][2]}-modul</small></td>
+            <td><button class="pr-mod" data-m="${esc(c)}"><b>${esc(MODULE_MAP[c][1])}</b><small class="pr-sub">${esc(MODULE_MAP[c][0])} · ${MODULE_MAP[c][2]}-modul &middot; darslarni ko'rish</small></button></td>
             <td>${num("module:" + c, "<b>" + fi(e.n) + "</b>")}</td>
             <td>${f1(e.n / V.T * 100)}%</td>
             <td class="pr-barcell">${bar(e.n, max)}</td>
             <td>${num("module:" + c, fi(e.st))}</td>
             <td><b>${f1(e.n / e.st)}</b></td>
             ${cmpOn() ? cmp2(VIEWS.aug.byModule, VIEWS.aug.T, c, e.n) : ""}
-          </tr>`).join("")}
+          </tr>
+          ${lessonRow(c, e.st, cols)}`).join("")}
           <tr class="pr-total"><td class="rank-col"></td><td><b>JAMI</b></td><td>${num("all", "<b>" + fi(V.T) + "</b>")}</td><td>100%</td><td></td><td></td><td></td>${cmpBlank()}</tr>
         </tbody>
       </table></div>
-      <p class="threshold-note">&laquo;Rad etilgan o'quvchi&raquo; ustunlarining yig'indisi ${fi(V.ST.length)} dan katta &mdash; bitta o'quvchi bir necha modulda rad etilgan bo'lishi mumkin, shu sababli u har bir modulda bir marta sanaladi.</p>
+      <p class="threshold-note">&laquo;Rad etilgan o'quvchi&raquo; ustunlarining yig'indisi ${fi(V.ST.length)} dan katta &mdash; bitta o'quvchi bir necha modulda rad etilgan bo'lishi mumkin, shu sababli u har bir modulda bir marta sanaladi. Dars bo'yicha ham xuddi shunday.</p>
     </section>`;
   }
 
@@ -540,6 +613,13 @@
     $("app").addEventListener("click", (e) => {
       const b = e.target.closest(".pr-num");
       if (b) { openList(b.dataset.q); return; }
+      const md = e.target.closest(".pr-mod");
+      if (md) {
+        const row = $("m" + md.dataset.m);
+        row.hidden = !row.hidden;
+        md.classList.toggle("open", !row.hidden);
+        return;
+      }
       const o = e.target.closest(".pr-open");
       if (o) {
         const row = $("d" + o.dataset.sid);

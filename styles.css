@@ -328,3 +328,19 @@ table.pr-mini-lead td:first-child { width: 78px; color: var(--volt-dark); font-w
 table.pr-mini-lead td:last-child { width: auto; text-align: left; font-weight: 500; }
 table.pr-mini-lead td b { color: var(--text); font-weight: 800; }
 table.pr-mini-lead tr.pr-mini-tot td { border-top: 1px solid var(--line); padding-top: 6px; }
+
+/* ---- modul nomiga bosilganda ochiladigan darslar ---- */
+.pr-mod {
+  display: block; width: 100%; padding: 0; border: 0; background: 0; cursor: pointer;
+  text-align: left; font: inherit; color: inherit;
+}
+.pr-mod > b { border-bottom: 1px dashed var(--volt); }
+.pr-mod:hover > b { color: var(--volt-dark); }
+.pr-mod .pr-sub::after { content: " \25BE"; color: var(--volt); font-weight: 800; }
+.pr-mod.open .pr-sub::after { content: " \25B4"; }
+.pr-mod.open > b { color: var(--volt-dark); border-bottom-style: solid; }
+
+tr.pr-mod-detail > td { background: var(--panel-2); padding: 0 10px 12px; }
+table.pr-lessons { min-width: 620px; margin-top: 2px; background: var(--panel); }
+table.pr-lessons td { font-size: 11.5px; }
+table.pr-lessons .pr-barcell { width: 130px; min-width: 80px; }
