@@ -206,59 +206,19 @@
     </section>`;
   }
 
-  /* ---------- 5. URINISH SONI ---------- */
-  function secAttempts() {
-    const rows = PR_PER_TASK;
-    const max = Math.max(...rows.map((r) => r[2]));
-    const tasks = rows.reduce((a, r) => a + r[1], 0);
-    const many = rows.slice(2);
-    const manyTasks = many.reduce((a, r) => a + r[1], 0);
-    const manyRej = many.reduce((a, r) => a + r[2], 0);
+  /* ---------- 5. IZOH ---------- */
+  function secNote() {
     return `
     <section class="ranking panel-cut" id="pr5">
       <div class="section-head">
         <div>
-          <p class="eyebrow">5 · Urinish soni</p>
-          <h2>Bitta vazifa necha marta rad etilgan</h2>
-          <p class="section-note">Birlik &mdash; &laquo;o'quvchi + vazifa&raquo; juftligi. Avgustda ${fi(tasks)} ta juftlikda kamida bitta rad etish bo'lgan.</p>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table class="pr-table pr-narrow">
-          <thead><tr><th>Necha marta rad etilgan</th><th>Nechta vazifa</th><th>Rad etishlar</th><th>Foiz</th><th>&nbsp;</th></tr></thead>
-          <tbody>
-            ${rows.map((r) => `<tr>
-              <td><b>${esc(r[0])}</b></td>
-              <td>${fi(r[1])}</td>
-              <td><b>${fi(r[2])}</b></td>
-              <td>${f1(pct(r[2], T))}%</td>
-              <td class="pr-barcell">${bar(r[2], max)}</td>
-            </tr>`).join("")}
-            <tr class="pr-total"><td><b>JAMI</b></td><td><b>${fi(tasks)}</b> vazifa</td><td><b>${fi(T)}</b></td><td>100%</td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="threshold-note">
-        Vazifalarning ko'pi bir marta rad etilib o'tib ketadi (${fi(rows[0][1])} ta). Lekin rad etishlarning asosiy qismi ko'p urinishli vazifalardan chiqadi:
-        <b>3 va undan ko'p marta</b> rad etilgan ${fi(manyTasks)} ta vazifa ${fi(manyRej)} ta rad etishni bergan &mdash; umumiy sonning ${f1(pct(manyRej, T))}% i.
-        <b>Aynan 3 marta</b> qatoridagi to'planish (${fi(rows[2][1])} vazifa) tasodifiy emas: AI tekshiruvi uch urinishdan keyin vazifani odamga o'tkazadi.
-      </p>
-    </section>`;
-  }
-
-  /* ---------- 6. IZOH ---------- */
-  function secNote() {
-    return `
-    <section class="ranking panel-cut" id="pr6">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">6 · Izoh</p>
+          <p class="eyebrow">5 · Izoh</p>
           <h2>Sonlar qanday olingan</h2>
         </div>
       </div>
       <div class="pr-rules">
         <div><b>Rad etish</b><p>Bazada <code>student_question_practice</code> jadvalidagi <code>status = 'rejected'</code> qatorlar. Davr &mdash; <code>created_at</code> 1&ndash;31 avgust 2026.</p></div>
-        <div><b>Birlik</b><p>Bitta qator = bitta rad etish hodisasi. Bitta vazifa uch marta rad etilsa &mdash; uch qator. Shu sababli ${fi(T)} soni vazifa soni emas.</p></div>
+        <div><b>Birlik</b><p>Bitta qator = bitta rad etish hodisasi. Bitta vazifa uch marta rad etilsa &mdash; uch qator. Shu sababli ${fi(T)} soni vazifa soni emas, rad etish soni.</p></div>
         <div><b>Foiz</b><p>Saytdagi har bir foiz bitta mahrajdan olingan: umumiy ${fi(T)} ta rad etish. Boshqa mahraj yo'q.</p></div>
         <div><b>Blockly kirmaydi</b><p><code>teacher_id = 1</code>, izoh <code>blockly-game</code> &mdash; o'yin vazifalarini tizim avtomatik qabul qiladi va hech qachon rad etmaydi. Avgustda bitta ham rad etish bermagan.</p></div>
         <div><b>Sabab toifasi</b><p>Izoh erkin matn (avgustda mentor izohlarida 1 597 xil matn). Kalit so'zlar bo'yicha prioritetli tartibda toifalanadi; bir izoh faqat bitta toifaga tushadi. Mentor izohlarining 8.7% i toifaga tushmadi.</p></div>
@@ -273,7 +233,7 @@
 
   /* ---------- montaj ---------- */
   function build() {
-    $("app").innerHTML = secTotal() + secReasons() + secCurators() + secModules() + secAttempts() + secNote();
+    $("app").innerHTML = secTotal() + secReasons() + secCurators() + secModules() + secNote();
     // har bir bo'lim sarlavhasi ostida davr yozib turadi
     document.querySelectorAll("#app .section-head h2").forEach((h) => {
       h.insertAdjacentHTML("afterend", `<p class="pr-period">Davr: <b>1–31 avgust 2026</b> &mdash; boshqa oy ma'lumoti yo'q</p>`);

@@ -170,13 +170,3 @@ const PR_REJ = {
 };
 
 
-// Bitta vazifa (o'quvchi × vazifa) necha marta rad etilgan — faqat rad etish bo'lganlar:
-// [guruh, zanjir soni, rad etishlar]
-const PR_PER_TASK = [
-  ["1 marta", 4645, 4645],
-  ["2 marta", 1815, 3630],
-  ["3 marta", 1651, 4953],
-  ["4–5 marta", 600, 2640],
-  ["6–10 marta", 515, 3925],
-  ["11+ marta", 242, 4878]
-];
