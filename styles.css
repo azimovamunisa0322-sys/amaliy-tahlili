@@ -220,3 +220,25 @@ footer { margin-top: 18px; color: var(--dim); font-size: 10.5px; line-height: 1.
 .pr-barcell { overflow: hidden; }
 .pr-period { margin: 5px 0 0; color: var(--volt-dark); font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .pr-period b { color: var(--volt-dark); }
+
+/* ---- bosiladigan sonlar va ro'yxat ---- */
+.pr-num {
+  padding: 1px 5px; margin: -1px -3px; border: 0; border-radius: 6px;
+  background: transparent; color: inherit; font: inherit; cursor: pointer;
+  border-bottom: 1px dashed #c3ccd8;
+}
+.pr-num:hover { background: #fff0eb; border-bottom-color: var(--volt); color: var(--volt-dark); }
+.pr-num:hover b { color: var(--volt-dark); }
+.pr-num-big { border: 0; padding: 0; margin: 0; color: var(--volt-dark); font: 800 clamp(56px,9vw,86px)/.85 "Barlow Condensed", sans-serif; }
+.pr-num-big:hover { background: transparent; text-decoration: underline; text-decoration-thickness: 4px; }
+.pr-num-stat { display: block; border: 0; padding: 0; margin: 0; color: var(--volt-dark); font: 800 30px/1 "Barlow Condensed", sans-serif; }
+.pr-num-stat:hover { background: transparent; text-decoration: underline; }
+.pr-dim { color: var(--dim); }
+.pr-reasons { max-width: 330px; }
+.pr-chipx {
+  display: inline-block; margin: 1px 3px 1px 0; padding: 1px 6px; border-radius: 999px;
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--muted);
+  font-size: 9.5px; font-weight: 700; white-space: nowrap;
+}
+#drillSection { border-left-color: var(--text); }
+#drillSection .pr-table { min-width: 1060px; }
