@@ -90,13 +90,10 @@
     $("drillNote").innerHTML = `<b>${fi(rows.length)}</b> o'quvchi &middot; <b>${fi(sum)}</b> rad etish (umumiy ${fi(T)} dan ${f1(sum / T * 100)}%). Ro'yxat rad etish soni bo'yicha tartiblangan.`;
     $("drillBody").innerHTML = rows.map(([s, n], i) => `<tr>
       <td class="rank-col">${i + 1}</td>
-      <td><b>${esc(s.name)}</b><small class="pr-sub">id ${s.id}</small></td>
+      <td><b>${esc(s.name)}</b></td>
       <td>${esc(s.group) || "<span class='pr-dim'>guruhi yo'q</span>"}</td>
       <td>${esc(s.curator)}</td>
       <td><b>${fi(n)}</b></td>
-      <td>${fi(s.total)}</td>
-      <td class="pr-reasons">${Object.entries(s.reasons).sort((a, b) => b[1] - a[1])
-        .map(([c, v]) => `<span class="pr-chipx" title="${esc(REASON_MAP[c][1])}">${esc(REASON_MAP[c][1].split(" (")[0].slice(0, 34))} · ${v}</span>`).join("")}</td>
     </tr>`).join("");
     const p = $("drillSection");
     p.hidden = false;
@@ -196,7 +193,7 @@
       <div class="section-head"><div>
         <p class="eyebrow">3 · Kurator</p>
         <h2>Qaysi kuratorning o'quvchilarida ko'p</h2>
-        <p class="section-note">Kurator = o'quvchining faol obunasidagi guruh kuratori. Har bir o'quvchida bitta kurator.</p>
+        <p class="section-note">Bizda <b>7 kurator</b> bor — jadvalda ular va alohida «biriktirilmagan» qatori. Kurator = o'quvchining faol obunasidagi guruh kuratori; har bir o'quvchida bitta kurator.</p>
       </div></div>
       <div class="pr-warn-strip">
         <b>Eng muhim ustun &mdash; &laquo;1 o'quvchiga o'rtacha&raquo;.</b> Yalpi son adashtiradi: ko'p o'quvchisi bor kuratorda rad etish tabiiy ravishda ko'p bo'ladi.
@@ -289,7 +286,7 @@
         <button type="button" class="text-button" id="drillClose">yopish &#10005;</button>
       </div>
       <div class="table-wrap"><table class="pr-table">
-        <thead><tr><th class="rank-col">#</th><th>O'quvchi</th><th>Guruh</th><th>Kurator</th><th>Shu kesimda rad etish</th><th>Jami rad etishi</th><th>Sabablari</th></tr></thead>
+        <thead><tr><th class="rank-col">#</th><th>O'quvchi</th><th>Guruh</th><th>Kurator</th><th>Rad etishlar</th></tr></thead>
         <tbody id="drillBody"></tbody>
       </table></div>
     </section>`;

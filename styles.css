@@ -234,11 +234,5 @@ footer { margin-top: 18px; color: var(--dim); font-size: 10.5px; line-height: 1.
 .pr-num-stat { display: block; border: 0; padding: 0; margin: 0; color: var(--volt-dark); font: 800 30px/1 "Barlow Condensed", sans-serif; }
 .pr-num-stat:hover { background: transparent; text-decoration: underline; }
 .pr-dim { color: var(--dim); }
-.pr-reasons { max-width: 330px; }
-.pr-chipx {
-  display: inline-block; margin: 1px 3px 1px 0; padding: 1px 6px; border-radius: 999px;
-  background: var(--panel-2); border: 1px solid var(--line); color: var(--muted);
-  font-size: 9.5px; font-weight: 700; white-space: nowrap;
-}
 #drillSection { border-left-color: var(--text); }
-#drillSection .pr-table { min-width: 1060px; }
+#drillSection .pr-table { min-width: 620px; }
