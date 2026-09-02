@@ -102,10 +102,10 @@
     const cont = h(["H", "F", "K", "L", "A", "D", "E"]);
     const rest = h(["Z", "M", "N"]);
     return `
-      <h3 class="sub-head">Xodim (mentor) qo'ygan rad etishlarni ikkiga bo'lsak</h3>
+      <h3 class="sub-head">Xodim (mentor) qo'ygan rad etishlar nima sababdan</h3>
       <div class="mentor-stat-row">
-        <div class="mentor-stat"><b>${fi(fmt)}</b><span>Topshirish formati aybdor</span><small>Skrinshotda kod yoki natija ko'rinmaydi, noto'g'ri fayl yuborilgan, bo'sh yuborilgan, havola yo'q, format buzilgan. O'quvchi <b>bilmagani uchun emas</b> &mdash; <b>to'g'ri topshirmagani uchun</b> rad etilgan. Umumiy ${fi(T)} dan ${f1(pct(fmt, T))}%.</small></div>
-        <div class="mentor-stat"><b>${fi(cont)}</b><span>Ishning o'zi aybdor</span><small>To'liq bajarmagan, kodda xato, shartga mos emas, umuman bajarmagan, AI bilan yozgan, telefonda qilgan. Umumiy ${fi(T)} dan ${f1(pct(cont, T))}%.</small></div>
+        <div class="mentor-stat"><b>${fi(fmt)}</b><span>Topshirish formati xato</span><small>Skrinshotda kod yoki natija ko'rinmaydi, noto'g'ri fayl yuborilgan, bo'sh yuborilgan, havola yo'q, format buzilgan. O'quvchi <b>bilmagani uchun emas</b> &mdash; <b>to'g'ri topshirmagani uchun</b> rad etilgan. Umumiy ${fi(T)} dan ${f1(pct(fmt, T))}%.</small></div>
+        <div class="mentor-stat"><b>${fi(cont)}</b><span>Amaliy vazifada xatolik</span><small>To'liq bajarmagan, kodda xato, shartga mos emas, umuman bajarmagan, AI bilan yozgan, telefonda qilgan. Umumiy ${fi(T)} dan ${f1(pct(cont, T))}%.</small></div>
         <div class="mentor-stat"><b>${fi(rest)}</b><span>Izohdan sabab tushunarsiz</span><small>Bir-ikki marta uchraydigan shaxsiy izohlar, izohsiz qoldirilganlar va &laquo;kuratorga murojaat qiling&raquo; deganlar. Umumiy ${fi(T)} dan ${f1(pct(rest, T))}%.</small></div>
       </div>
       <p class="threshold-note"><b>Nima qilish mumkin:</b> ${fi(fmt)} ta rad etish o'quvchining bilimiga emas, topshirish tartibiga tegishli &mdash; dars mazmunini o'zgartirmasdan, faqat &laquo;qanday topshirish kerak&raquo; ni tushuntirib kamaytirish mumkin.</p>`;
