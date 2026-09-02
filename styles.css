@@ -235,4 +235,6 @@ footer { margin-top: 18px; color: var(--dim); font-size: 10.5px; line-height: 1.
 .pr-num-stat:hover { background: transparent; text-decoration: underline; }
 .pr-dim { color: var(--dim); }
 #drillSection { border-left-color: var(--text); }
-#drillSection .pr-table { min-width: 620px; }
+#drillSection .pr-table { min-width: 760px; }
+.pr-hint { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.pr-hint b { color: var(--text); }

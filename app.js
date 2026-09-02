@@ -22,16 +22,18 @@
   }
   const CH_OF = (code) => REASON_MAP[code][0];   // "h" | "a" | "v"
 
-  const ST = STUDENTS.map((r) => {
+  const ST = STUDENTS.map((r, i) => {
     const mods = parseCounts(r[4]), reasons = parseCounts(r[5]);
     let total = 0; const ch = { h: 0, a: 0, v: 0 };
     for (const k in reasons) { total += reasons[k]; ch[CH_OF(k)] += reasons[k]; }
     return {
       id: r[0], name: r[1],
       group: GROUP_MAP[r[2]] || "", curator: CURATOR_MAP[r[3]] || CURATOR_MAP[0],
-      mods, reasons, total, ch
+      mods, reasons, total, ch,
+      tasks: TASKS[i]   // necha XIL vazifada rad etilgan (tartib STUDENTS bilan bir xil)
     };
   });
+  if (TASKS.length !== STUDENTS.length) console.error("TASKS va STUDENTS uzunligi mos emas!");
 
   const T = ST.reduce((s, x) => s + x.total, 0);
 
@@ -87,13 +89,15 @@
     rows.sort((a, b) => b[1] - a[1] || a[0].name.localeCompare(b[0].name));
     const sum = rows.reduce((s, r) => s + r[1], 0);
     $("drillTitle").textContent = title;
-    $("drillNote").innerHTML = `<b>${fi(rows.length)}</b> o'quvchi &middot; <b>${fi(sum)}</b> rad etish (umumiy ${fi(T)} dan ${f1(sum / T * 100)}%). Ro'yxat rad etish soni bo'yicha tartiblangan.`;
+    $("drillNote").innerHTML = `<b>${fi(rows.length)}</b> o'quvchi &middot; <b>${fi(sum)}</b> rad etish (umumiy ${fi(T)} dan ${f1(sum / T * 100)}%). Ro'yxat rad etish soni bo'yicha tartiblangan.<br>
+      <span class="pr-hint"><b>&laquo;Rad etishlar&raquo; ustuni vazifa soni emas.</b> Bitta vazifa o'n martalab qayta yuborilishi mumkin, har biri alohida sanaladi &mdash; shu sababli yonida <b>necha xil vazifada</b> rad etilgani ham turadi. Masalan 129 rad etish, lekin 31 xil vazifada.</span>`;
     $("drillBody").innerHTML = rows.map(([s, n], i) => `<tr>
       <td class="rank-col">${i + 1}</td>
       <td><b>${esc(s.name)}</b></td>
       <td>${esc(s.group) || "<span class='pr-dim'>guruhi yo'q</span>"}</td>
       <td>${esc(s.curator)}</td>
       <td><b>${fi(n)}</b></td>
+      <td>${fi(s.tasks)}</td>
     </tr>`).join("");
     const p = $("drillSection");
     p.hidden = false;
@@ -286,7 +290,7 @@
         <button type="button" class="text-button" id="drillClose">yopish &#10005;</button>
       </div>
       <div class="table-wrap"><table class="pr-table">
-        <thead><tr><th class="rank-col">#</th><th>O'quvchi</th><th>Guruh</th><th>Kurator</th><th>Rad etishlar</th></tr></thead>
+        <thead><tr><th class="rank-col">#</th><th>O'quvchi</th><th>Guruh</th><th>Kurator</th><th>Rad etishlar</th><th>Necha xil vazifada</th></tr></thead>
         <tbody id="drillBody"></tbody>
       </table></div>
     </section>`;
