@@ -22,7 +22,7 @@ const CURATOR_MAP = {
   14974: "Jasmina Tolibova",
   16005: "Madina Normatova",
   16386: "Xalima Ismoiljonova",
-  21453: "Kurator biriktirilmagan",
+  21453: "MK super teacher (test hisobi)",
   21463: "Shaxlo Ziyodova"
 };
 

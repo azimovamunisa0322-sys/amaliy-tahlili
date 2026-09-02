@@ -30,6 +30,12 @@
     return Object.entries(m).sort((a, b) => b[1] - a[1]);
   }
 
+  // Guruhi yo'q o'quvchilar saytdan chiqarilgan (foydalanuvchi so'rovi, 2026-09-02):
+  // faol obunasi bo'lmagan — muzlatilgan yoki kursni tugatgan — o'quvchilar.
+  // Ular bilan "kuratori yo'q" to'plami aynan bir xil (388 o'quvchi, 2 823 rad etish).
+  // MUHIM: TASKS massivi STUDENTS bilan indeks bo'yicha bog'langan, shu sababli
+  // filtr faqat map() dan KEYIN qo'llanadi.
+  const EXCLUDED = { students: 0, rejections: 0 };
   const ST = STUDENTS.map((r, i) => {
     const mods = parseCounts(r[4]), reasons = parseCounts(r[5]);
     let total = 0; const ch = { h: 0, a: 0, v: 0 };
@@ -39,8 +45,13 @@
       group: GROUP_MAP[r[2]] || "", curator: CURATOR_MAP[r[3]] || CURATOR_MAP[0],
       mods, reasons, total, ch,
       tasks: TASKS[i],  // necha XIL vazifada rad etilgan (tartib STUDENTS bilan bir xil)
-      courses: byCourse(mods)
+      courses: byCourse(mods),
+      hasGroup: r[2] !== 0
     };
+  }).filter((s) => {
+    if (s.hasGroup) return true;
+    EXCLUDED.students += 1; EXCLUDED.rejections += s.total;
+    return false;
   });
   if (TASKS.length !== STUDENTS.length) console.error("TASKS va STUDENTS uzunligi mos emas!");
 
@@ -233,7 +244,7 @@
       <div class="section-head"><div>
         <p class="eyebrow">3 · Kurator</p>
         <h2>Qaysi kuratorning o'quvchilarida ko'p</h2>
-        <p class="section-note">Bizda <b>7 kurator</b> bor — jadvalda ular va alohida «biriktirilmagan» qatori. Kurator = o'quvchining faol obunasidagi guruh kuratori; har bir o'quvchida bitta kurator.</p>
+        <p class="section-note">Bizda <b>7 kurator</b> bor. Kurator = o'quvchining faol obunasidagi guruh kuratori; har bir o'quvchida bitta kurator. Guruhi yo'q o'quvchilar saytdan chiqarilgani uchun «biriktirilmagan» qatori endi yo'q.</p>
       </div></div>
       <div class="pr-warn-strip">
         <b>Eng muhim ustun &mdash; &laquo;1 o'quvchiga o'rtacha&raquo;.</b> Yalpi son adashtiradi: ko'p o'quvchisi bor kuratorda rad etish tabiiy ravishda ko'p bo'ladi.
@@ -256,7 +267,7 @@
           <tr class="pr-total"><td class="rank-col"></td><td><b>JAMI</b></td><td>${num("all", "<b>" + fi(T) + "</b>")}</td><td>100%</td><td></td><td>${num("all", fi(ST.length))}</td><td><b>${f1(T / ST.length)}</b></td></tr>
         </tbody>
       </table></div>
-      <p class="threshold-note">Jadval umumiy ${fi(T)} ta rad etishning hammasini qoplaydi. &laquo;Kurator biriktirilmagan&raquo; qatoridagi ${fi(un[1].n)} ta rad etish (${f1(un[1].n / T * 100)}%) hech qaysi kuratorga tegishli emas.</p>
+      <p class="threshold-note">Jadval umumiy ${fi(T)} ta rad etishning hammasini qoplaydi.${un ? ` &laquo;${esc(un[0])}&raquo; qatori &mdash; ${fi(un[1].n)} ta rad etish (${f1(un[1].n / T * 100)}%) &mdash; platformadagi test hisobi.` : ""}</p>
     </section>`;
   }
 
@@ -303,6 +314,7 @@
         <div><b>Birlik</b><p>Bitta qator = bitta rad etish hodisasi. Bitta vazifa uch marta rad etilsa &mdash; uch qator. Shu sababli ${fi(T)} soni vazifa soni emas.</p></div>
         <div><b>Foiz</b><p>Saytdagi har bir foiz bitta mahrajdan olingan: umumiy ${fi(T)} ta rad etish. Boshqa mahraj yo'q.</p></div>
         <div><b>Har bir son bosiladi</b><p>Sahifadagi hamma son bitta ro'yxatdan &mdash; ${fi(ST.length)} o'quvchi qatoridan hisoblanadi. Songa bosilganda aynan shu son ortidagi o'quvchilar chiqadi, shu sababli jadval bilan ro'yxat doim mos keladi.</p></div>
+        <div><b>Guruhi yo'q o'quvchilar kirmaydi</b><p>Faol obunasi bo'lmagan &mdash; muzlatilgan yoki kursni tugatgan &mdash; o'quvchilar chiqarilgan: ${fi(EXCLUDED.students)} o'quvchi, ${fi(EXCLUDED.rejections)} rad etish. Ular bilan &laquo;kuratori yo'q&raquo; to'plami aynan bir xil, shu sababli kurator jadvalida &laquo;biriktirilmagan&raquo; qatori endi yo'q.</p></div>
         <div><b>Blockly kirmaydi</b><p><code>teacher_id = 1</code>, izoh <code>blockly-game</code> &mdash; o'yin vazifalarini tizim avtomatik qabul qiladi va hech qachon rad etmaydi.</p></div>
         <div><b>Sabab toifasi</b><p>Izoh erkin matn (mentor izohlarida 1 597 xil matn). Kalit so'zlar bo'yicha prioritetli tartibda toifalanadi; bir izoh faqat bitta toifaga tushadi.</p></div>
       </div>
@@ -338,6 +350,10 @@
 
     $("rangeChip").textContent = "1–31 avgust 2026";
     $("countChip").textContent = `${fi(T)} ta rad etish`;
+    document.querySelectorAll(".js-total").forEach((el) => (el.textContent = fi(T)));
+    $("exclNote").innerHTML =
+      `Guruhi yo'q <b>${fi(EXCLUDED.students)}</b> o'quvchi va ularning <b>${fi(EXCLUDED.rejections)}</b> rad etishi ` +
+      `saytdan chiqarilgan. Bazadagi avgust jami — 24 671; bu yerdagi <b>${fi(T)}</b> esa faqat guruhi bor o'quvchilar bo'yicha.`;
 
     $("app").addEventListener("click", (e) => {
       const b = e.target.closest(".pr-num");
