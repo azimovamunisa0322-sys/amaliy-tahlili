@@ -22,6 +22,14 @@
   }
   const CH_OF = (code) => REASON_MAP[code][0];   // "h" | "a" | "v"
 
+  // modul sonlarini KURS bo'yicha yig'ish: MODULE_MAP[belgi][0] = kurs nomi.
+  // Yig'indisi o'quvchining jami rad etishiga aynan teng bo'ladi.
+  function byCourse(mods) {
+    const m = {};
+    for (const k in mods) { const c = MODULE_MAP[k][0]; m[c] = (m[c] || 0) + mods[k]; }
+    return Object.entries(m).sort((a, b) => b[1] - a[1]);
+  }
+
   const ST = STUDENTS.map((r, i) => {
     const mods = parseCounts(r[4]), reasons = parseCounts(r[5]);
     let total = 0; const ch = { h: 0, a: 0, v: 0 };
@@ -30,7 +38,8 @@
       id: r[0], name: r[1],
       group: GROUP_MAP[r[2]] || "", curator: CURATOR_MAP[r[3]] || CURATOR_MAP[0],
       mods, reasons, total, ch,
-      tasks: TASKS[i]   // necha XIL vazifada rad etilgan (tartib STUDENTS bilan bir xil)
+      tasks: TASKS[i],  // necha XIL vazifada rad etilgan (tartib STUDENTS bilan bir xil)
+      courses: byCourse(mods)
     };
   });
   if (TASKS.length !== STUDENTS.length) console.error("TASKS va STUDENTS uzunligi mos emas!");
@@ -115,14 +124,15 @@
     const sum = rows.reduce((s, r) => s + r[1], 0);
     $("drillTitle").textContent = title;
     $("drillNote").innerHTML = `<b>${fi(rows.length)}</b> o'quvchi &middot; <b>${fi(sum)}</b> rad etish (umumiy ${fi(T)} dan ${f1(sum / T * 100)}%). Ro'yxat rad etish soni bo'yicha tartiblangan.<br>
-      <span class="pr-hint"><b>&laquo;Rad etishlar&raquo; ustuni vazifa soni emas.</b> Bitta vazifa o'n martalab qayta yuborilishi mumkin, har biri alohida sanaladi &mdash; shu sababli yonida <b>necha xil vazifada</b> rad etilgani ham turadi. Masalan 129 rad etish, lekin 31 xil vazifada. <b>Ismga bosing</b> &mdash; o'sha o'quvchi qaysi modulda va qaysi sababdan rad etilgani ochiladi.</span>`;
+      <span class="pr-hint"><b>&laquo;Qaysi kursdan&raquo;</b> ustunidagi sonlar qo'shilib <b>jami rad etish</b> ni beradi &mdash; masalan English 69 + Dasturlash kursi 41 + Grafik dizayn 19 = 129.
+      <b>Ismga bosing</b> &mdash; qaysi <b>modulda</b> va qaysi <b>sababdan</b> rad etilgani, hamda necha xil vazifada ekani ochiladi.</span>`;
     $("drillBody").innerHTML = rows.map(([s, n], i) => `<tr>
       <td class="rank-col">${i + 1}</td>
       <td><button class="pr-open" data-sid="${s.id}">${esc(s.name)}</button></td>
       <td>${esc(s.group) || "<span class='pr-dim'>guruhi yo'q</span>"}</td>
       <td>${esc(s.curator)}</td>
       <td><b>${fi(n)}</b></td>
-      <td>${fi(s.tasks)}</td>
+      <td class="pr-courses">${s.courses.map(([c, n]) => `<span class="pr-crs">${esc(c)} <b>${fi(n)}</b></span>`).join("")}</td>
     </tr>
     <tr class="pr-detail" id="d${s.id}" hidden><td></td><td colspan="5">${detail(s)}</td></tr>`).join("");
     const p = $("drillSection");
@@ -316,7 +326,7 @@
         <button type="button" class="text-button" id="drillClose">yopish &#10005;</button>
       </div>
       <div class="table-wrap"><table class="pr-table">
-        <thead><tr><th class="rank-col">#</th><th>O'quvchi</th><th>Guruh</th><th>Kurator</th><th>Rad etishlar</th><th>Necha xil vazifada</th></tr></thead>
+        <thead><tr><th class="rank-col">#</th><th>O'quvchi</th><th>Guruh</th><th>Kurator</th><th>Jami rad etish</th><th>Qaysi kursdan</th></tr></thead>
         <tbody id="drillBody"></tbody>
       </table></div>
     </section>`;

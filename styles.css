@@ -235,7 +235,7 @@ footer { margin-top: 18px; color: var(--dim); font-size: 10.5px; line-height: 1.
 .pr-num-stat:hover { background: transparent; text-decoration: underline; }
 .pr-dim { color: var(--dim); }
 #drillSection { border-left-color: var(--text); }
-#drillSection .pr-table { min-width: 760px; }
+#drillSection .pr-table { min-width: 900px; }
 .pr-hint { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.5; }
 .pr-hint b { color: var(--text); }
 
@@ -259,3 +259,12 @@ table.pr-mini { width: 100%; min-width: 0; }
 table.pr-mini td { padding: 3px 0; border: 0; font-size: 11px; }
 table.pr-mini td:last-child { width: 46px; text-align: right; font-weight: 800; }
 @media (max-width: 700px) { .pr-detail-cols { grid-template-columns: 1fr; } }
+
+/* ---- ro'yxatdagi kurs kesimi ---- */
+.pr-courses { min-width: 260px; }
+.pr-crs {
+  display: inline-block; margin: 1px 4px 1px 0; padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--panel-2);
+  color: var(--muted); font-size: 10.5px; white-space: nowrap;
+}
+.pr-crs b { color: var(--text); font-size: 11.5px; }
