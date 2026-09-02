@@ -84,21 +84,47 @@
     return { title: "—", rows: [] };
   }
 
+  // bitta o'quvchining kesimi: qaysi modulda va qaysi sababdan
+  function detail(s) {
+    const mods = Object.entries(s.mods).sort((a, b) => b[1] - a[1]);
+    const rs = Object.entries(s.reasons).sort((a, b) => b[1] - a[1]);
+    const avg = s.total / s.tasks;
+    return `
+      <div class="pr-detail-box">
+        <p class="pr-detail-lead">
+          <b>${fi(s.total)}</b> rad etish, <b>${fi(s.tasks)}</b> xil vazifada &mdash;
+          ya'ni bitta vazifaga o'rtacha <b>${f1(avg)}</b> marta rad etish to'g'ri kelgan.
+          ${avg >= 3 ? "Ba'zi vazifalarni ko'p marta qayta yuborgan: yordam kerak bo'lgan joy shu." : "Ko'p vazifada bir-ikki martadan &mdash; jiddiy tiqilish yo'q."}
+        </p>
+        <div class="pr-detail-cols">
+          <div>
+            <b>Qaysi modulda</b>
+            <table class="pr-mini">${mods.map(([c, n]) => `<tr><td>${esc(MODULE_MAP[c][0])} · ${esc(MODULE_MAP[c][1])}</td><td>${fi(n)}</td></tr>`).join("")}</table>
+          </div>
+          <div>
+            <b>Qaysi sababdan</b>
+            <table class="pr-mini">${rs.map(([c, n]) => `<tr><td>${esc(REASON_MAP[c][1])}</td><td>${fi(n)}</td></tr>`).join("")}</table>
+          </div>
+        </div>
+      </div>`;
+  }
+
   function openList(q) {
     const { title, rows } = slice(q);
     rows.sort((a, b) => b[1] - a[1] || a[0].name.localeCompare(b[0].name));
     const sum = rows.reduce((s, r) => s + r[1], 0);
     $("drillTitle").textContent = title;
     $("drillNote").innerHTML = `<b>${fi(rows.length)}</b> o'quvchi &middot; <b>${fi(sum)}</b> rad etish (umumiy ${fi(T)} dan ${f1(sum / T * 100)}%). Ro'yxat rad etish soni bo'yicha tartiblangan.<br>
-      <span class="pr-hint"><b>&laquo;Rad etishlar&raquo; ustuni vazifa soni emas.</b> Bitta vazifa o'n martalab qayta yuborilishi mumkin, har biri alohida sanaladi &mdash; shu sababli yonida <b>necha xil vazifada</b> rad etilgani ham turadi. Masalan 129 rad etish, lekin 31 xil vazifada.</span>`;
+      <span class="pr-hint"><b>&laquo;Rad etishlar&raquo; ustuni vazifa soni emas.</b> Bitta vazifa o'n martalab qayta yuborilishi mumkin, har biri alohida sanaladi &mdash; shu sababli yonida <b>necha xil vazifada</b> rad etilgani ham turadi. Masalan 129 rad etish, lekin 31 xil vazifada. <b>Ismga bosing</b> &mdash; o'sha o'quvchi qaysi modulda va qaysi sababdan rad etilgani ochiladi.</span>`;
     $("drillBody").innerHTML = rows.map(([s, n], i) => `<tr>
       <td class="rank-col">${i + 1}</td>
-      <td><b>${esc(s.name)}</b></td>
+      <td><button class="pr-open" data-sid="${s.id}">${esc(s.name)}</button></td>
       <td>${esc(s.group) || "<span class='pr-dim'>guruhi yo'q</span>"}</td>
       <td>${esc(s.curator)}</td>
       <td><b>${fi(n)}</b></td>
       <td>${fi(s.tasks)}</td>
-    </tr>`).join("");
+    </tr>
+    <tr class="pr-detail" id="d${s.id}" hidden><td></td><td colspan="5">${detail(s)}</td></tr>`).join("");
     const p = $("drillSection");
     p.hidden = false;
     p.scrollIntoView({ block: "start" });
@@ -306,6 +332,13 @@
     $("app").addEventListener("click", (e) => {
       const b = e.target.closest(".pr-num");
       if (b) { openList(b.dataset.q); return; }
+      const o = e.target.closest(".pr-open");
+      if (o) {
+        const row = $("d" + o.dataset.sid);
+        row.hidden = !row.hidden;
+        o.classList.toggle("open", !row.hidden);
+        return;
+      }
       if (e.target.closest("#drillClose")) $("drillSection").hidden = true;
     });
   }
