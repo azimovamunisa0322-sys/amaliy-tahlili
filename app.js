@@ -192,7 +192,8 @@
         Bu bo'linish faqat shu yerda ko'rsatiladi. Blockly o'yin vazifalari umuman kirmaydi &mdash; ularni tizim avtomatik qabul qiladi, hech qachon rad etmaydi.<br>
         <b>AI tekshiruvi butun avgust ishlamagan.</b> Bazadagi eng birinchi AI tekshiruvi &mdash; 30-iyul 11:35. U 31-iyul ertalab 08:57 da to'xtagan,
         <b>1 va 2 avgustda umuman ishlamagan</b>, va 3-avgust 15:30 da qaytib yoqilgan &mdash; shundan keyin oy oxirigacha uzluksiz ishlagan.
-        Shu sababli AI ustunidagi son 31 kunning emas, <b>29 kunning</b> soni. O'sha ikki kunda kod vazifalarini ham mentorlar tekshirgan:
+        Shu sababli AI ustunidagi son 31 kunning emas, <b>29 kunning</b> soni. <b>Bu ma'lumot yetishmasligi emas</b> &mdash; o'sha ikki kunda AI umuman ishlamagan,
+        kod vazifalarini mentorlar tekshirgan, shu sababli 1 va 2 avgustning jami soni ham to'liq. O'sha ikki kunda kod vazifalarini ham mentorlar tekshirgan:
         mentor tekshiruvi 1-avgustda 1 335, 2-avgustda 1 275 ta bo'lgan &mdash; oyning eng baland kunlari; AI yoqilgach kuniga 350&ndash;500 ga tushgan.<br>
         <b>Har bir songa bosing</b> &mdash; o'sha sonning ortidagi o'quvchilar ro'yxati ochiladi.
       </p>
@@ -322,13 +323,15 @@
         <div><b>Birlik</b><p>Bitta qator = bitta rad etish hodisasi. Bitta vazifa uch marta rad etilsa &mdash; uch qator. Shu sababli ${fi(T)} soni vazifa soni emas.</p></div>
         <div><b>Foiz</b><p>Saytdagi har bir foiz bitta mahrajdan olingan: umumiy ${fi(T)} ta rad etish. Boshqa mahraj yo'q.</p></div>
         <div><b>Har bir son bosiladi</b><p>Sahifadagi hamma son bitta ro'yxatdan &mdash; ${fi(ST.length)} o'quvchi qatoridan hisoblanadi. Songa bosilganda aynan shu son ortidagi o'quvchilar chiqadi, shu sababli jadval bilan ro'yxat doim mos keladi.</p></div>
-        <div><b>AI tekshiruvi qachondan</b><p>Birinchi AI tekshiruvi 30-iyul 11:35. 1&ndash;2 avgustda ishlamagan, 3-avgust 15:30 dan uzluksiz. Ya'ni AI soni avgustning 29 kuniga tegishli, mentor va ovoz soni esa 31 kuniga.</p></div>
+        <div><b>AI tekshiruvi qachondan</b><p>Birinchi AI tekshiruvi 30-iyul 11:35. 1&ndash;2 avgustda ishlamagan, 3-avgust 15:30 dan uzluksiz. Ya'ni AI soni avgustning 29 kuniga tegishli, mentor va ovoz soni esa 31 kuniga. Jami son esa har kuni to'liq &mdash; AI ishlamagan kunlarda mentorlar tekshirgan.</p></div>
         <div><b>Kim kirmaydi</b><p>Guruhi yo'q &mdash; faol obunasi bo'lmagan, muzlatilgan yoki tugatgan &mdash; ${fi(EXCLUDED.noGroup)} o'quvchi (${fi(EXCLUDED.noGroupRej)} rad etish) va ${fi(EXCLUDED.test)} test akkaunt (${fi(EXCLUDED.testRej)} rad etish). &laquo;Guruhi yo'q&raquo; bilan &laquo;kuratori yo'q&raquo; to'plami aynan bir xil, shu sababli kurator jadvalida faqat 7 kurator qoldi.</p></div>
         <div><b>Blockly kirmaydi</b><p><code>teacher_id = 1</code>, izoh <code>blockly-game</code> &mdash; o'yin vazifalarini tizim avtomatik qabul qiladi va hech qachon rad etmaydi.</p></div>
         <div><b>Sabab toifasi</b><p>Izoh erkin matn (mentor izohlarida 1 597 xil matn). Kalit so'zlar bo'yicha prioritetli tartibda toifalanadi; bir izoh faqat bitta toifaga tushadi.</p></div>
       </div>
       <p class="threshold-note">
-        <b>Bazadan o'qilgan payt:</b> ${esc(PR_SNAPSHOT)}. Baza jonli: hali tekshirilmagan topshiriqlar keyin qabul yoki rad ga o'tadi, shu sababli 30&ndash;31 avgust sonlari keyingi o'qishda bir necha birlik o'sishi mumkin.<br>
+        <b>Avgust yopilgan &mdash; bu sonlar yakuniy.</b> Ma'lumot ${esc(PR_SNAPSHOT)} da olingan va ${esc(PR_RECHECK)} da bazaga qayta solishtirilgan:
+        avgustda bitta ham tekshirilmagan (<code>uploaded</code>) topshiriq qolmagan &mdash; hammasi qabul yoki rad ga o'tgan, va jami rad etish
+        <b>24 671</b> da o'zgarmagan. Ya'ni sonlar 1&ndash;31 avgustni to'liq qamraydi va endi o'zgarmaydi. 31-avgust ham ichida: o'sha kuni 784 rad etish.<br>
         <b>Manba jadvallar:</b> <code>student_question_practice</code>, <code>student_questions</code>, <code>student_lessons</code>, <code>student_modules</code>, <code>student_courses</code>, <code>student_students</code>, <code>student_list</code>, <code>subscribe_list</code>, <code>group_list</code>, <code>gl_sys_users</code>.
       </p>
     </section>`;

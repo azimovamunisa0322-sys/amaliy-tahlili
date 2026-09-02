@@ -13,6 +13,7 @@
 // ============================================================================
 
 const PR_SNAPSHOT = "2026-09-02 17:30";
+const PR_RECHECK  = "2026-09-02 19:10";   // avgust yopilganini tasdiqlagan qayta tekshiruv
 
 const CURATOR_MAP = {
   0: "Kurator biriktirilmagan",
