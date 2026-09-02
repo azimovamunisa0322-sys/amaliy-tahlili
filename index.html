@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avgustda rad etilgan amaliy vazifalar</title>
-<link rel="stylesheet" href="styles.css?v=21">
+<title>Rad etilgan amaliy vazifalar</title>
+<link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body>
 <div class="wrap">
 
   <header class="page-head">
     <div>
-      <p class="eyebrow" id="eyebrow">Junior LMS · 1–31 avgust 2026</p>
-      <h1>RAD ETILGAN <b>AMALIY VAZIFALAR</b></h1>
+      <p class="eyebrow" id="eyebrow">Junior LMS</p>
+      <h1 id="pageTitle">RAD ETILGAN <b>AMALIY VAZIFALAR</b></h1>
     </div>
     <div class="head-meta">
       <span class="chip" id="rangeChip">—</span>
@@ -20,12 +20,20 @@
     </div>
   </header>
 
+  <div class="pr-filter" id="periodFilter">
+    <span class="pr-filter-lab">Davr</span>
+    <button type="button" data-p="aug" class="on">Avgust</button>
+    <button type="button" data-p="sep">Sentyabr</button>
+    <button type="button" data-p="both">Avgust + Sentyabr</button>
+    <span class="pr-filter-note" id="periodNote">—</span>
+  </div>
+
   <div class="method-strip panel-cut">
     <span class="method-icon">?</span>
     <div class="strip-body">
-      <p>Avgust oyida <b class="js-total">—</b> ta amaliy vazifa rad etilgan (guruhi bor o'quvchilar bo'yicha). Bu sayt shu sonni bo'lib ko'rsatadi: <b>nega</b> rad etilgan, <b>qaysi kuratorda</b> va <b>qaysi moduldan</b> ko'p.</p>
+      <p id="methodLead">—</p>
       <details class="strip-more"><summary>Bitta muhim izoh</summary>
-        <div class="strip-more-body"><b class="js-total">—</b> &mdash; bu <b>rad etish hodisasi</b> soni, vazifa soni emas. Bitta o'quvchi bitta vazifani uch marta yuborib, uch marta rad ettirsa, u uch marta sanaladi. Blockly o'yin vazifalari bu yerda umuman yo'q: ularni tizim avtomatik qabul qiladi va hech qachon rad etmaydi.</div>
+        <div class="strip-more-body" id="methodMore">—</div>
       </details>
     </div>
   </div>
@@ -40,13 +48,12 @@
   <main id="app" class="pr-sections"></main>
 
   <footer>
-    <p>Manba: Junior LMS / CRM bazasi. Davr: 1–31 avgust 2026 (topshiriq yuborilgan sana bo'yicha).
-    Barcha son bazadagi haqiqiy qatorlardan olingan &mdash; hech narsa taxmin qilinmagan. Avgust yopilgan: tekshirilmagan topshiriq qolmagan, sonlar yakuniy.</p>
+    <p id="footNote">—</p>
   </footer>
 
 </div>
 
-<script src="students.js?v=21"></script>
-<script src="app.js?v=21"></script>
+<script src="students.js?v=22"></script>
+<script src="app.js?v=22"></script>
 </body>
 </html>

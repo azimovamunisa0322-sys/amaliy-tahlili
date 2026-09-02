@@ -268,3 +268,63 @@ table.pr-mini td:last-child { width: 46px; text-align: right; font-weight: 800; 
   color: var(--muted); font-size: 10.5px; white-space: nowrap;
 }
 .pr-crs b { color: var(--text); font-size: 11.5px; }
+
+/* ---- davr filtri ---- */
+.pr-filter {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 7px;
+  margin: 0 0 12px; padding: 10px 13px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--panel); box-shadow: 0 7px 24px rgba(16,21,29,.045);
+}
+.pr-filter-lab {
+  color: var(--muted); font-size: 10.5px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase; margin-right: 3px;
+}
+.pr-filter button {
+  padding: 8px 15px; border: 1px solid var(--line); border-radius: 999px;
+  background: var(--panel-2); color: var(--muted);
+  font: 800 12px/1 Manrope, sans-serif; letter-spacing: .02em; cursor: pointer;
+}
+.pr-filter button:hover { color: var(--volt-dark); border-color: var(--volt); }
+.pr-filter button.on {
+  color: #fff; background: var(--volt); border-color: var(--volt);
+  box-shadow: 0 3px 10px rgba(255,79,40,.28);
+}
+.pr-filter-note {
+  flex: 1 1 240px; min-width: 200px;
+  color: var(--dim); font-size: 10.5px; line-height: 1.45;
+}
+@media (max-width: 640px) {
+  .pr-filter button { flex: 1 1 auto; }
+  .pr-filter-note { flex-basis: 100%; }
+}
+
+/* ---- kunlik o'rtacha bloki ---- */
+.pr-daily { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 12px 0 4px; }
+.pr-daily > div { padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); }
+.pr-daily > div > b { display: block; font: 800 30px/1 "Barlow Condensed", sans-serif; color: var(--volt-dark); }
+.pr-daily > div > span { display: block; margin-top: 3px; color: var(--text); font-size: 11.5px; font-weight: 800; }
+.pr-daily > div > small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.pr-daily-days > b { font: 800 11px/1.4 Manrope, sans-serif !important; color: var(--volt-dark) !important; letter-spacing: .04em; text-transform: uppercase; }
+.pr-daily-days small b { color: var(--text); font-size: 11.5px; font-weight: 800; }
+.pr-daily-days small i { color: var(--dim); font-style: normal; }
+
+/* ---- avgust bilan solishtirish ustunlari ---- */
+th.pr-cmp, td.pr-cmp { width: 92px; text-align: right; white-space: nowrap; }
+th.pr-cmp { color: var(--muted); }
+td.pr-cmp { font-size: 11px; color: var(--muted); }
+.pr-delta {
+  display: inline-block; min-width: 46px; padding: 2px 7px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; text-align: center;
+}
+.pr-delta.up { color: #fff; background: var(--red); }
+.pr-delta.down { color: #fff; background: var(--green); }
+.pr-delta.flat { color: var(--muted); background: var(--panel-2); border: 1px solid var(--line); }
+
+/* ---- ro'yxatdagi oy kesimi ---- */
+table.pr-mini-lead { margin-bottom: 10px; }
+table.pr-mini-lead td { padding: 4px 10px 4px 0; color: var(--muted); font-size: 11.5px; }
+table.pr-mini-lead td:first-child { width: 78px; color: var(--volt-dark); font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
+table.pr-mini-lead td:last-child { width: auto; text-align: left; font-weight: 500; }
+table.pr-mini-lead td b { color: var(--text); font-weight: 800; }
+table.pr-mini-lead tr.pr-mini-tot td { border-top: 1px solid var(--line); padding-top: 6px; }
