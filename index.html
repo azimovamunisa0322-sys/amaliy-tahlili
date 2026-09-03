@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rad etilgan amaliy vazifalar</title>
-<link rel="stylesheet" href="styles.css?v=25">
+<title>Отклонённые практические задания</title>
+<link rel="stylesheet" href="styles.css?v=29">
 </head>
 <body>
 <div class="wrap">
@@ -12,7 +12,7 @@
   <header class="page-head">
     <div>
       <p class="eyebrow" id="eyebrow">Junior LMS</p>
-      <h1 id="pageTitle">RAD ETILGAN <b>AMALIY VAZIFALAR</b></h1>
+      <h1 id="pageTitle">ОТКЛОНЁННЫЕ <b>ПРАКТИЧЕСКИЕ ЗАДАНИЯ</b></h1>
     </div>
     <div class="head-meta">
       <span class="chip" id="rangeChip">—</span>
@@ -20,19 +20,26 @@
     </div>
   </header>
 
-  <div class="pr-filter" id="periodFilter">
-    <span class="pr-filter-lab">Davr</span>
-    <button type="button" data-p="aug" class="on">Avgust</button>
-    <button type="button" data-p="sep">Sentyabr</button>
-    <button type="button" data-p="both">Avgust + Sentyabr</button>
-    <span class="pr-filter-note" id="periodNote">—</span>
+  <div class="pr-filter">
+    <div class="pr-filter-row" id="periodFilter">
+      <span class="pr-filter-lab" id="periodWord">Период</span>
+      <button type="button" data-p="aug" id="btn-aug" class="on">Август</button>
+      <button type="button" data-p="sep" id="btn-sep">Сентябрь</button>
+      <button type="button" data-p="both" id="btn-both">Август + сентябрь</button>
+      <span class="pr-filter-note" id="periodNote">—</span>
+    </div>
+    <div class="pr-filter-row pr-lang-row" id="langFilter">
+      <span class="pr-filter-lab" id="langWord">Язык</span>
+      <button type="button" data-l="ru" class="on">Русский</button>
+      <button type="button" data-l="uz">O&#39;zbekcha</button>
+    </div>
   </div>
 
   <div class="method-strip panel-cut">
     <span class="method-icon">?</span>
     <div class="strip-body">
       <p id="methodLead">—</p>
-      <details class="strip-more"><summary>Bitta muhim izoh</summary>
+      <details class="strip-more"><summary id="methodSummary">—</summary>
         <div class="strip-more-body" id="methodMore">—</div>
       </details>
     </div>
@@ -41,8 +48,7 @@
   <div class="pr-warn-strip" id="exclNote">—</div>
 
   <nav class="pr-subnav">
-    <a href="#pr1">1 · Umumiy son</a><a href="#pr2">2 · Nega rad etildi</a>
-    <a href="#pr3">3 · Kurator</a><a href="#pr4">4 · Modul</a><a href="#pr5">5 · Izoh</a>
+    <a href="#pr1">—</a><a href="#pr2">—</a><a href="#pr3">—</a><a href="#pr4">—</a><a href="#pr5">—</a>
   </nav>
 
   <main id="app" class="pr-sections"></main>
@@ -53,7 +59,8 @@
 
 </div>
 
-<script src="students.js?v=25"></script>
-<script src="app.js?v=25"></script>
+<script src="i18n.js?v=29"></script>
+<script src="students.js?v=29"></script>
+<script src="app.js?v=29"></script>
 </body>
 </html>
