@@ -52,12 +52,12 @@ const STRINGS = {
     shortAug: "avgust", shortSep: "sentyabr", shortBoth: "avgust va sentyabr",
     innAug: "avgustda", innSep: "sentyabrda", innBoth: "avgust va sentyabrda",
     perAug: "1–31 avgust 2026",
-    perSep: "1&ndash;2 sentyabr 2026",
-    perBoth: "1-avgust &ndash; 2-sentyabr 2026",
+    perSep: "1&ndash;3 sentyabr 2026",
+    perBoth: "1-avgust &ndash; 3-sentyabr 2026",
     perDaysAug: "31 kun",
-    perDaysSep: "1-sentyabr to'liq + 2-sentyabr 18:50 gacha, ya'ni 1,8 kun",
-    perDaysBoth: "31 kun avgust + 1,8 kun sentyabr",
-    dayNames: ["1-sentyabr", "2-sentyabr"],
+    perDaysSep: "1 va 2-sentyabr to'liq + 3-sentyabr 12:00 gacha, ya'ni 2,5 kun",
+    perDaysBoth: "31 kun avgust + 2,5 kun sentyabr",
+    dayNames: ["1-sentyabr", "2-sentyabr", "3-sentyabr"],
     chipCount: (n) => `${FI(n)} ta rad etish`,
     periodWord: "Davr",
     btnAug: "Avgust", btnSep: "Sentyabr", btnBoth: "Avgust + Sentyabr",
@@ -116,7 +116,7 @@ const STRINGS = {
     perDayAugLabel: "avgustda kuniga o'rtacha",
     perDayAugHint: (n) => `Solishtirish uchun: ${FI(n)} &divide; 31 kun`,
     sepDaysTitle: "Sentyabrning kunlari",
-    dayUnfinished: "(18:50 gacha, kun tugamagan)",
+    dayUnfinished: "(12:00 gacha, kun tugamagan)",
     s1sub: "Rad etishni kim qo'ygan",
     s1auto: (pct) =>
       `Rad etishning ${pct}% ini <b>odam emas, tizim</b> qo'ygan: kod vazifalarini AI, English kursidagi ovozli mashqlarni ovoz avtotekshiruvi tekshiradi.
@@ -134,7 +134,7 @@ const STRINGS = {
     s2h2: "Nega rad etildi",
     s2note: "Har bir rad etishda izoh yozilgan. Izohlar erkin matn, shu sababli kalit so'zlar bo'yicha toifalangan (qoidalar oxirgi bo'limda).",
     s2noteCmp: " Oxirgi ikki ustun <b>avgust bilan solishtiradi</b>: qaysi sabab ulushi o'sgan, qaysi biri kamaygan.",
-    s2cmpStrip: "<b>Farq &mdash; foiz punktida.</b> Masalan avgustda 5,4% bo'lgan sabab sentyabrda 7,4% bo'lsa, farq +2,0 punkt. Bu ulushning o'zgarishi, sonning emas: sentyabr hali 2 kun, shu sababli yalpi sonni avgust bilan solishtirmang &mdash; ulushni solishtiring.",
+    s2cmpStrip: "<b>Farq &mdash; foiz punktida.</b> Masalan avgustda 5,4% bo'lgan sabab sentyabrda 7,4% bo'lsa, farq +2,0 punkt. Bu ulushning o'zgarishi, sonning emas: sentyabr hali 2,5 kun, shu sababli yalpi sonni avgust bilan solishtirmang &mdash; ulushni solishtiring.",
     mentorQuote: "Mentor izohi:",
     s2sub: "Xodim (mentor) qo'ygan rad etishlar nima sababdan",
     rgroupTail: (tot, pct, studBtn) => ` Umumiy ${FI(tot)} dan ${pct}%, ${studBtn}.`,
@@ -179,15 +179,18 @@ const STRINGS = {
       ["Kim kirmaydi", `Guruhi yo'q &mdash; faol obunasi bo'lmagan, muzlatilgan yoki tugatgan &mdash; ${FI(V.exNg)} o'quvchi (${FI(V.exNgR)} rad etish) va ${FI(V.exTs)} test akkaunt (${FI(V.exTsR)} rad etish). &laquo;Guruhi yo'q&raquo; bilan &laquo;kuratori yo'q&raquo; to'plami aynan bir xil, shu sababli kurator jadvalida faqat 7 kurator qoldi.`],
       ["Blockly kirmaydi", "<code>teacher_id = 1</code>, izoh <code>blockly-game</code> &mdash; o'yin vazifalarini tizim avtomatik qabul qiladi va hech qachon rad etmaydi."],
       ["Sabab toifasi", "Izoh erkin matn (mentor izohlarida 1 597 xil matn). Kalit so'zlar bo'yicha prioritetli tartibda toifalanadi; bir izoh faqat bitta toifaga tushadi."],
+      ["Guruh va kurator &mdash; hozirgi holat", "O'quvchining guruhi va kuratori <b>bugungi faol obunasi</b> bo'yicha olinadi, avgustdagi holati bo'yicha emas. Shu sababli muzlatilgan o'quvchi qayta faollashtirilsa, uning avgustdagi rad etishlari &laquo;guruhi yo'q&raquo; dan chiqib, kurator ustuniga o'tadi &mdash; ya'ni o'tgan oyning sonlari ham ozgina siljishi mumkin. Aynan shunday bo'ldi: 3-sentyabrda bitta o'quvchining obunasi avtomatik qayta yoqilgan va uning 9 rad etishi Madina Normatova ustuniga qo'shildi. Guruh va kurator holati oxirgi marta shu sanada bazaga solishtirilgan."],
       ["Til", "Sayt ikki tilda: sonlar va hisob-kitob bir xil, faqat matn o'zgaradi. Bazadan olingan nomlar &mdash; o'quvchi, guruh, kurator, kurs, modul va dars nomlari &mdash; tarjima qilinmaydi, chunki ular platformadagi haqiqiy yozuvlar. Mentor izohlaridan olingan misollar rus tilida tarjima sifatida beriladi va jadvalda shundayligi yozilgan."]
     ],
     s5closed: (snap, recheck) =>
       `<b>Avgust yopilgan &mdash; uning sonlari yakuniy.</b> Avgust ma'lumoti ${snap} da olingan va ${recheck} da bazaga qayta solishtirilgan:
        avgustda bitta ham tekshirilmagan (<code>uploaded</code>) topshiriq qolmagan, jami rad etish <b>24 671</b> da o'zgarmagan. Ya'ni sonlar 1&ndash;31 avgustni to'liq qamraydi va endi o'zgarmaydi. 31-avgust ham ichida: o'sha kuni 784 rad etish.`,
     s5open: (cut) =>
-      `<b>Sentyabr hali yopilmagan.</b> Bugun 2-sentyabr, baza to'lib turadi. Shu sababli sentyabr kesimi aniq vaqtga qadalgan: <b>${cut}</b>. O'sha vaqtdan keyin qo'yilgan rad etishlar bu yerda yo'q, va sentyabr sonlari keyingi yangilashda o'sadi.
-       Shuning uchun sentyabrni avgust bilan <b>yalpi son bo'yicha solishtirmang</b> &mdash; kunlik o'rtacha yoki foiz ulushi bo'yicha solishtiring.`,
-    s5both: " Hozir ikki oy birga tanlangan: xom jami <b>25 500</b> (avgust 24 671 + sentyabr 829).",
+      `<b>Sentyabr hali yopilmagan</b> &mdash; kesim aniq vaqtga qadalgan: <b>${cut}</b>. Sentyabr sonlari keyingi yangilashda <b>ikki sababdan</b> o'sadi.
+       <b>Birinchi:</b> yangi kunlar qo'shiladi. <b>Ikkinchi:</b> kesimdan oldin yuborilgan, lekin o'sha payt hali tekshirilmagan topshiriqlar keyin rad etiladi &mdash; ya'ni kesim o'zgarmasa ham eski kunlarning soni ortishi mumkin.
+       Aynan shu sodir bo'ldi: 2-sentyabr 18:50 kesimida 829 rad etish bor edi, keyin o'sha oynadagi son 838 ga chiqdi.
+       Shu sababli sentyabrni avgust bilan <b>yalpi son bo'yicha solishtirmang</b> &mdash; kunlik o'rtacha yoki foiz ulushi bo'yicha solishtiring.`,
+    s5both: " Hozir ikki oy birga tanlangan: xom jami <b>25 891</b> (avgust 24 671 + sentyabr 1 220).",
     s5tables: "<b>Manba jadvallar:</b>",
 
     /* ---- ro'yxat ---- */
@@ -227,12 +230,12 @@ const STRINGS = {
     shortAug: "август", shortSep: "сентябрь", shortBoth: "август и сентябрь",
     innAug: "в августе", innSep: "в сентябре", innBoth: "в августе и сентябре",
     perAug: "1–31 августа 2026",
-    perSep: "1&ndash;2 сентября 2026",
-    perBoth: "1 августа &ndash; 2 сентября 2026",
+    perSep: "1&ndash;3 сентября 2026",
+    perBoth: "1 августа &ndash; 3 сентября 2026",
     perDaysAug: "31 день",
-    perDaysSep: "1 сентября полностью + 2 сентября до 18:50, то есть 1,8 дня",
-    perDaysBoth: "31 день августа + 1,8 дня сентября",
-    dayNames: ["1 сентября", "2 сентября"],
+    perDaysSep: "1 и 2 сентября полностью + 3 сентября до 12:00, то есть 2,5 дня",
+    perDaysBoth: "31 день августа + 2,5 дня сентября",
+    dayNames: ["1 сентября", "2 сентября", "3 сентября"],
     chipCount: (n) => NPL(n, W.rej),
     periodWord: "Период",
     btnAug: "Август", btnSep: "Сентябрь", btnBoth: "Август + сентябрь",
@@ -291,7 +294,7 @@ const STRINGS = {
     perDayAugLabel: "в среднем за день в августе",
     perDayAugHint: (n) => `Для сравнения: ${FI(n)} &divide; 31 день`,
     sepDaysTitle: "Дни сентября",
-    dayUnfinished: "(до 18:50, день не закончен)",
+    dayUnfinished: "(до 12:00, день не закончен)",
     s1sub: "Кто поставил отклонение",
     s1auto: (pct) =>
       `${pct}% отклонений поставил <b>не человек, а система</b>: задания по коду проверяет ИИ, голосовые упражнения курса English &mdash; автопроверка речи.
@@ -309,7 +312,7 @@ const STRINGS = {
     s2h2: "Почему отклонили",
     s2note: "К каждому отклонению написан комментарий. Комментарии &mdash; свободный текст, поэтому они разложены по ключевым словам (правила в последнем разделе).",
     s2noteCmp: " Последние два столбца <b>сравнивают с августом</b>: доля какой причины выросла, а какой упала.",
-    s2cmpStrip: "<b>Разница &mdash; в процентных пунктах.</b> Например, причина была 5,4% в августе и стала 7,4% в сентябре &mdash; разница +2,0 п.п. Это изменение доли, а не числа: сентябрь идёт всего 2 дня, поэтому не сравнивайте валовые числа с августом &mdash; сравнивайте доли.",
+    s2cmpStrip: "<b>Разница &mdash; в процентных пунктах.</b> Например, причина была 5,4% в августе и стала 7,4% в сентябре &mdash; разница +2,0 п.п. Это изменение доли, а не числа: сентябрь идёт всего 2,5 дня, поэтому не сравнивайте валовые числа с августом &mdash; сравнивайте доли.",
     mentorQuote: "Пример комментария ментора (перевод с узбекского):",
     s2sub: "По каким причинам отклоняет сотрудник (ментор)",
     rgroupTail: (tot, pct, studBtn) => ` ${pct}% от общих ${FI(tot)}, ${studBtn}.`,
@@ -354,15 +357,18 @@ const STRINGS = {
       ["Кто не входит", `Без группы &mdash; без активной подписки, заморожены или завершили &mdash; ${NPL(V.exNg, W.stud)} (${FI(V.exNgR)} ${PL(V.exNgR, W.rej)}) и ${FI(V.exTs)} тестовый ${PL(V.exTs, W.acc)} (${FI(V.exTsR)} ${PL(V.exTsR, W.rej)}). Множества &laquo;без группы&raquo; и &laquo;без куратора&raquo; полностью совпадают, поэтому в таблице кураторов осталось только 7 кураторов.`],
       ["Blockly не входит", "<code>teacher_id = 1</code>, комментарий <code>blockly-game</code> &mdash; игровые задания система принимает автоматически и никогда не отклоняет."],
       ["Категория причины", "Комментарий &mdash; свободный текст (1 597 разных текстов в комментариях менторов). Категоризация по ключевым словам в порядке приоритета; один комментарий попадает только в одну категорию."],
+      ["Группа и куратор &mdash; текущее состояние", "Группа и куратор ученика берутся по его <b>активной подписке на сегодня</b>, а не по состоянию на август. Поэтому если замороженного ученика снова активировали, его августовские отклонения уходят из &laquo;без группы&raquo; в столбец куратора &mdash; то есть цифры прошлого месяца тоже могут немного сдвинуться. Именно так и случилось: 3 сентября подписку одного ученика автоматически возобновили, и его 9 отклонений добавились в столбец Мадины Норматовой. Состояние групп и кураторов последний раз сверено с базой в эту дату."],
       ["Язык", "Сайт на двух языках: цифры и расчёты одинаковые, меняется только текст. Названия из базы &mdash; имена учеников, названия групп, кураторов, курсов, модулей и уроков &mdash; не переводятся, потому что это реальные записи платформы. Примеры комментариев менторов даны в переводе с узбекского, и в таблице это подписано."]
     ],
     s5closed: (snap, recheck) =>
       `<b>Август закрыт &mdash; его цифры окончательные.</b> Данные за август взяты ${snap} и сверены с базой заново ${recheck}:
        в августе не осталось ни одного непроверенного (<code>uploaded</code>) задания, общее число отклонений не изменилось и равно <b>24 671</b>. То есть цифры полностью покрывают 1&ndash;31 августа и больше не изменятся. 31 августа тоже внутри: в тот день 784 отклонения.`,
     s5open: (cut) =>
-      `<b>Сентябрь ещё не закрыт.</b> Сегодня 2 сентября, база пополняется. Поэтому срез сентября прибит к точному времени: <b>${cut}</b>. Отклонений, поставленных после этого времени, здесь нет, и при следующем обновлении цифры сентября вырастут.
+      `<b>Сентябрь ещё не закрыт</b> &mdash; срез прибит к точному времени: <b>${cut}</b>. При следующем обновлении цифры сентября вырастут по <b>двум причинам</b>.
+       <b>Первая:</b> добавятся новые дни. <b>Вторая:</b> задания, отправленные до среза, но на тот момент ещё не проверенные, отклоняют позже &mdash; то есть число за прошедшие дни может вырасти даже при том же срезе.
+       Именно это и произошло: на срезе 2 сентября 18:50 было 829 отклонений, потом число в том же окне стало 838.
        Поэтому не сравнивайте сентябрь с августом <b>по валовому числу</b> &mdash; сравнивайте по среднему за день или по доле в процентах.`,
-    s5both: " Сейчас выбраны оба месяца: сырой итог <b>25 500</b> (август 24 671 + сентябрь 829).",
+    s5both: " Сейчас выбраны оба месяца: сырой итог <b>25 891</b> (август 24 671 + сентябрь 1 220).",
     s5tables: "<b>Таблицы-источники:</b>",
 
     /* ---- список ---- */

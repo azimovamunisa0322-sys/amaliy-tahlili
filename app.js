@@ -77,12 +77,12 @@
   }
 
   /* ---------- davrlar ---------- */
-  // Sentyabr 2 kun emas: 1-sentyabr to'liq + 2-sentyabr 18:50 gacha.
-  const SEP_DAYS = 1 + (18 * 60 + 50) / 1440;
+  // Sentyabr: 1 va 2-sentyabr to'liq + 3-sentyabr 12:00 gacha = 2,5 kun.
+  const SEP_DAYS = 2 + 12 / 24;
   const PMETA = {
     aug: { key: "aug", days: 31, raw: 24671, closed: true },
-    sep: { key: "sep", days: SEP_DAYS, raw: 829, closed: false },
-    both: { key: "both", days: 31 + SEP_DAYS, raw: 25500, closed: false }
+    sep: { key: "sep", days: SEP_DAYS, raw: 1220, closed: false },
+    both: { key: "both", days: 31 + SEP_DAYS, raw: 25891, closed: false }
   };
   const pick = (k, a, s, b) => (k === "aug" ? a : k === "sep" ? s : b);
   const pLabel = (k) => t(pick(k, "perAug", "perSep", "perBoth"));
