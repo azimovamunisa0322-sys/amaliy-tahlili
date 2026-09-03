@@ -93,6 +93,19 @@
   if (TASKS.length !== STUDENTS.length) console.error("TASKS va STUDENTS uzunligi mos emas!");
   RAW_SEP.forEach((s) => { if (!Number.isFinite(s.tasks)) console.error("TASKS_SEP yo'q: " + s.id); });
 
+  // "Necha xil vazifada" = necha xil DARSDA — bu hozircha to'g'ri, chunki shu
+  // davrda rad etish bo'lgan 503 darsning har birida aynan bitta amaliy savol
+  // rad etilgan. Bazada esa bitta darsda bir necha savol bo'lishi mumkin
+  // (masalan 1297-darsda 6 ta). Agar keyingi yangilashda bitta darsning ikkinchi
+  // savoli ham rad etilsa, dars tokeni ikkisini bitta qatorga qo'shib yuboradi
+  // va son kamayib ketadi. Shu sababli tenglikni jim qoldirmaymiz:
+  [[RAW_AUG, "avgust"], [RAW_SEP, "sentyabr"]].forEach(([set, nom]) => {
+    set.forEach((s) => {
+      const n = Object.keys(s.lessons).length;
+      if (n !== s.tasks) console.error(`${nom}: o'quvchi ${s.id} — dars soni ${n}, vazifa soni ${s.tasks}. "Necha xil vazifada" soni endi to'g'ri emas.`);
+    });
+  });
+
   // ikki oyni bitta o'quvchiga birlashtirish: sonlar qo'shiladi, holat
   // (guruh/kurator/ism) sentyabrdan olinadi — u yangiroq.
   function mergeSets() {

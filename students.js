@@ -70,7 +70,7 @@ const MODULE_MAP = {
   y: ["Grafik dizayn", "Illustrator", 6], z: ["Telegram Bot", "Telegram Bot", 1],
   A: ["Grafik dizayn", "Magica Voxel", 3], B: ["Веб программирование", "Scratch", 6],
   C: ["2 Test Course for Mustahkamlash", "Module 2", 2], D: ["Веб программирование", "WiX", 5],
-  E: ["JSX Lessons", "Test_jsx_web", 1]
+  E: ["JSX Lessons", "Test_jsx_web", 15]
 };
 
 // belgi -> [kim, sabab, mentor izohiga misol]
